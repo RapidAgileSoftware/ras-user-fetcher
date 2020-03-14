@@ -11,7 +11,8 @@
  * @subpackage Ras_User_Fetcher/public/partials
  */
 
-get_header(); ?>
+get_header();
+?>
 
 <div id="primary" class="site-content">
   <div id="content" role="main">

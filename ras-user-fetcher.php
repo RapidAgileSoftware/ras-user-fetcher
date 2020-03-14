@@ -57,8 +57,6 @@ function deactivate_ras_user_fetcher() {
 	Ras_User_Fetcher_Activator::deactivate();
 }
 
-
-
 register_activation_hook( __FILE__, 'activate_ras_user_fetcher' );
 register_deactivation_hook( __FILE__, 'deactivate_ras_user_fetcher' );
 

@@ -29,6 +29,8 @@
  */
 class Ras_User_Fetcher {
 
+	protected $endpoint = 'rastapasta';
+
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
@@ -111,11 +113,12 @@ class Ras_User_Fetcher {
 	 */
 
 	protected function defineHooks(){
-		$plugin = new Ras_User_Fetcher_Public( $this->get_plugin_name(), $this->get_version() );
+		// $plugin = new Ras_User_Fetcher_Public( $this->get_plugin_name(), $this->get_version() );
 		$loader = $this->getLoader();
-		$loader->add_action( 'wp_enqueue_scripts', $plugin, 'enqueue_styles' );
-		$loader->add_action( 'wp_enqueue_scripts', $plugin, 'enqueue_scripts' );
-		$loader->add_action( 'template_include', $plugin, 'change_template' );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles' );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
+		$loader->add_action( 'template_include', $this, 'change_template' );
+
 	}
 
 	/**
@@ -137,11 +140,7 @@ class Ras_User_Fetcher {
 	 */
 	public function get_plugin_name() {
 
-		if(!isset($this->plugin_name)){
-			$this->plugin_name = 'ras-user-fetcher';
-		}
-
-		return $this->plugin_name;
+		return $this->plugin_name ?? 'ras-user-fetcher';
 	}
 
 
@@ -155,7 +154,7 @@ class Ras_User_Fetcher {
 	}
 
 	/**
-	 * Setter fir Loader instrance
+	 * Setter fir Loader instance
 	 *
 	 * @since     1.0.0
 	 * @return    instance of Ras_User_Fetcher
@@ -174,10 +173,76 @@ class Ras_User_Fetcher {
 	 */
 	public function get_version() {
 
-		if (!isset($this->version)) {
-			$this->version = RAS_USER_FETCHER_VERSION ?? '1.0.0';
-		}
-		return $this->version;
+		return $this->version ?? RAS_USER_FETCHER_VERSION ?? '1.0.0';
 	}
+
+
+	/**
+	 * Register the stylesheets for the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_styles() {
+
+		/**
+		 * This function is provided for demonstration purposes only.
+		 *
+		 * An instance of this class should be passed to the run() function
+		 * defined in Ras_User_Fetcher_Loader as all of the hooks are defined
+		 * in that particular class.
+		 *
+		 * The Ras_User_Fetcher_Loader will then create the relationship
+		 * between the defined hooks and the functions defined in this
+		 * class.
+		 */
+
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . '../public/css/ras-user-fetcher-public.css', array(), $this->version, 'all' );
+
+	}
+
+	/**
+	 * Register the JavaScript for the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_scripts() {
+
+		/**
+		 * This function is provided for demonstration purposes only.
+		 *
+		 * An instance of this class should be passed to the run() function
+		 * defined in Ras_User_Fetcher_Loader as all of the hooks are defined
+		 * in that particular class.
+		 *
+		 * The Ras_User_Fetcher_Loader will then create the relationship
+		 * between the defined hooks and the functions defined in this
+		 * class.
+		 */
+
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . '../public/js/ras-user-fetcher-public.js', ['jquery'], $this->version, false );
+
+	}
+
+	public function change_template( $template ) {
+		/*
+	  		global $wp_query;
+			var_dump($wp_query->query_vars);
+		*/
+
+        if( get_query_var( $this->endpoint , false ) !== false ) {
+            $newTemplate = plugin_dir_path( __FILE__ ) . '../public/partials/ras-user-fetcher-public.php';
+            if( file_exists( $newTemplate ) )
+                return $newTemplate;
+
+        }
+        //Fall back to original template
+        return $template;
+
+    }
+
+    public function get_endpoint(){
+
+    	return $this->endpoint;
+    }
 
 }
