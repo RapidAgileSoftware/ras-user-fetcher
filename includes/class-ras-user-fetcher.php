@@ -29,7 +29,7 @@
  */
 class Ras_User_Fetcher {
 
-	protected $endpoint = 'rastapasta';
+	protected $endpoint;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -68,7 +68,8 @@ class Ras_User_Fetcher {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct(string $endpoint) {
+		$this->endpoint=$endpoint;
 		$this->loadDependencies();
 		$this->defineHooks();
 	}
@@ -174,7 +175,7 @@ class Ras_User_Fetcher {
 
     public function get_endpoint(){
 
-    	return $this->endpoint ?? 'rastapasta';
+    	return $this->endpoint ?? RAS_USER_FETCHER_ENDPOINT ?? 'ras-user-fetcher';
     }
 
 
