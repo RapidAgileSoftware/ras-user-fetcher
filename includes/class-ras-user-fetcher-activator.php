@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during plugin activation
  *
@@ -10,31 +9,43 @@
  * @subpackage Ras_User_Fetcher/includes
  */
 
-/**
- * Fired during plugin activation.
- *
- * This class defines all code necessary to run during the plugin's activation.
- *
- * @since      1.0.0
- * @package    Ras_User_Fetcher
- * @subpackage Ras_User_Fetcher/includes
- * @author     Jens Krause <jens@rasta.online>
- */
+
 class Ras_User_Fetcher_Activator {
+
+	protected $endpoint = 'ras-user-fetcher';
+	protected $page_title ='User Fetcher';
+	protected $page;
+	protected $js_snippet = '<script>console.log("Welcome Rasta");</script>';
+	protected $uf_exist;
 
 	/**
 	 * runs once while plugin activation
-	 * adds rewrite endpoint
-	 * flushes rewrite rules
+	 * adds required page if not already existent
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
+	public function activate():bool {
 
-		register_activation_hook(__FILE__, self::create_uf_page());
-		add_rewrite_endpoint( 'rastapasta', EP_ROOT  );
-        flush_rewrite_rules();
+		return $this->create_userfetcher_page();
 	}
+
+	protected function create_userfetcher_page():bool
+    {
+    	if(!$this->userfetcher_exists()){
+    		// create page for the user fetcher
+    		$page_userfetcher = [
+				  'post_title'    => $this->page_title,
+				  'post_name'		=> $this->endpoint,
+  				'post_content'  => $this->get_snippet(),
+  				'post_status'   => 'publish',
+  				'post_author'   => get_current_user_id(),
+  				'post_type' => 'page'
+    		];
+   			wp_insert_post( $page_userfetcher );
+   			return true;
+    	}
+    	return false;
+    }
 
 	/**
 	 * runs on plugin deactivation
@@ -42,22 +53,39 @@ class Ras_User_Fetcher_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
-		flush_rewrite_rules();
+	public function deactivate():bool {
+		return $this->delete_userfetcher_page();
 	}
 
-	protected function create_uf_page()
-    {
-    	$post_details = [
-			'post_title'    => 'User Fetcher',
-  			'post_content'  => 'include my funky code here',
-  			'post_status'   => 'publish',
-  			'post_author'   => 1,
-  			'post_type' => 'page'
-    	];
 
-   		wp_insert_post( $post_details );
+  protected function delete_userfetcher_page():bool
+  {
+    $page = get_page_by_path( $this->endpoint );
+    // nothing to clean up, early finish
+    if($page === NULL){
+        return false;
     }
+    else{
+      //delete our custom page
+      wp_delete_post($page->ID);
+      // refresh post data
+      wp_reset_postdata ();
+      return true;
+    }
+  }
 
+  protected function userfetcher_exists():bool
+  {
+    $page = get_page_by_path( $this->endpoint );
+    return ($page === NULL)? false: true;
+  }
+
+  public function get_page(){
+
+  }
+
+  protected function get_snippet():string {
+    return $this->js_snippet;
+  }
 
 }

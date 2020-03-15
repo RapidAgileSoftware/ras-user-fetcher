@@ -39,32 +39,10 @@ define( 'RAS_USER_FETCHER_VERSION', '1.0.0' );
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher-activator.php';
 
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-ras-user-fetcher-activator.php
- */
-function activate_ras_user_fetcher() {
-	// register endpoint and flush rewrite rules
-	Ras_User_Fetcher_Activator::activate();
-}
+$PluginActivator = new Ras_User_Fetcher_Activator();
 
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-ras-user-fetcher-activator.php
- */
-function deactivate_ras_user_fetcher() {
-	// flush rewrite rules
-	Ras_User_Fetcher_Activator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_ras_user_fetcher' );
-register_deactivation_hook( __FILE__, 'deactivate_ras_user_fetcher' );
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher.php';
+register_activation_hook( __FILE__, [$PluginActivator, 'activate'] );
+register_deactivation_hook( __FILE__, [$PluginActivator, 'deactivate'] );
 
 /**
  * Begins execution of the plugin.
@@ -75,6 +53,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher.php';
  *
  * @since    1.0.0
  */
-
-$userFetcher = new Ras_User_Fetcher();
-$userFetcher->run();
+// require plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher.php';
+//$userFetcher = new Ras_User_Fetcher();
+//$userFetcher->run();
