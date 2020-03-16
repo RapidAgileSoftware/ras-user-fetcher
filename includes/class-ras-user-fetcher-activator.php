@@ -13,18 +13,15 @@
 class Ras_User_Fetcher_Activator {
 
   // available endpoint
-	protected $endpoint;
+  protected $endpoint = RAS_USER_FETCHER_ENDPOINT;
   // page title of userfetcher page
-	protected $page_title ='User Fetcher';
+  protected $page_title =RAS_USER_FETCHER_PAGETITLE;
   // reference for UserFetcher
   protected $page;
   // snippet to be included to start js functionalities
-	protected $snippet = '<div id="ras_user_fetcher"><b>Start</b</div><script>console.log("Wicked snippet ...");</script>';
+  protected $snippet = RAS_USER_FETCHER_SNIPPET;
 
-  public function __construct(string $endpoint) {
-    $this->endpoint = $endpoint;
-  }
-	/**
+ 	/**
 	 * runs once while plugin activation
 	 * adds required page if not already existent
 	 *
@@ -91,6 +88,16 @@ class Ras_User_Fetcher_Activator {
     }
   }
 
+  public function load_scripts()
+  {
+    global $post;
+    if( is_page() && $post->post_name === $this->endpoint )
+    {
+      wp_enqueue_script( 'ras-user-fetcher', plugins_url( '../public/js/ras-user-fetcher.js' , __FILE__ ), ['jquery'] );
+    } 
+
+  }
+
   /**
    * checks is there is already a userfetcher page
    *
@@ -107,7 +114,7 @@ class Ras_User_Fetcher_Activator {
    * @since    1.0.0
    */
   public function get_snippet():string {
-    return $this->snippet;
+    return $this->snippet ?? '<div id="ras-user-fetcher"></div>';
   }
 
   public function get_page()

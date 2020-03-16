@@ -21,30 +21,17 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
 define( 'RAS_USER_FETCHER_VERSION', '1.0.0' );
-define( 'RAS_USER_FETCHER_ENDPOINT', 'rastapasta_lecker');
+define( 'RAS_USER_FETCHER_ENDPOINT', 'ras-user-fetcher');
+define( 'RAS_USER_FETCHER_PAGETITLE', 'Users table');
+define( 'RAS_USER_FETCHER_SNIPPET', '<div id="ras-user-fetcher"></div>');
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher-activator.php';
 
-$PluginActivator = new Ras_User_Fetcher_Activator(RAS_USER_FETCHER_ENDPOINT);
+$PluginActivator = new Ras_User_Fetcher_Activator();
 
 register_activation_hook( __FILE__, [$PluginActivator, 'activate'] );
 register_deactivation_hook( __FILE__, [$PluginActivator, 'deactivate'] );
-
-/**
- * Begins execution of the plugin.
- * @since    1.0.0
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher-server.php';
-$PluginServer = new Ras_User_Fetcher_Server();
-$PluginServer->run();
+add_action('wp_enqueue_scripts', [$PluginActivator, 'load_scripts']);
 
 
-//require plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher.php';
-//$userFetcher = new Ras_User_Fetcher(RAS_USER_FETCHER_ENDPOINT);
-//$userFetcher->run();
