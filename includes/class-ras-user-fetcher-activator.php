@@ -93,7 +93,20 @@ class Ras_User_Fetcher_Activator {
     global $post;
     if( is_page() && $post->post_name === $this->endpoint )
     {
-      wp_enqueue_script( 'ras-user-fetcher', plugins_url( '../public/js/ras-user-fetcher.js' , __FILE__ ), ['jquery'] );
+      wp_enqueue_script( 'ras-user-fetcher-ui', plugins_url( '../public/js/jquery-ui.min.js' , __FILE__ ), ['jquery'] );
+      wp_enqueue_script( 'ras-user-fetcher-jtable', plugins_url( '../public/js/jquery.jtable.min.js' , __FILE__ ), ['jquery'] );
+      wp_enqueue_script( 'ras-user-fetcher-core', plugins_url( '../public/js/ras-user-fetcher.js' , __FILE__ ), ['jquery'] );
+      // pass some data into js
+
+
+      
+      require_once plugin_dir_path( __FILE__ ) . 'RasUserFetcherApi.php';
+      $userData = [];
+      $data =[
+        'user_endpoint' => plugins_url( 'RasUserFetcherApi.php?action=list-users' , __FILE__ ),
+        'user_data' => $userData
+      ];
+      wp_localize_script( 'ras-user-fetcher-core', 'php_vars', $data );
     } 
 
   }

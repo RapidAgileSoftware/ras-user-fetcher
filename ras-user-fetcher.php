@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'RAS_USER_FETCHER_VERSION', '1.0.0' );
 define( 'RAS_USER_FETCHER_ENDPOINT', 'ras-user-fetcher');
 define( 'RAS_USER_FETCHER_PAGETITLE', 'Users table');
-define( 'RAS_USER_FETCHER_SNIPPET', '<div id="ras-user-fetcher"></div>');
+define( 'RAS_USER_FETCHER_SNIPPET', '<div id="ras-user-fetcher" style="width: 600px;"></div>');
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-ras-user-fetcher-activator.php';
 
