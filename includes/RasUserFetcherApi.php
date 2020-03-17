@@ -2,33 +2,44 @@
 
 class RasUserFetcherApi {
 
-	protected $request;
+    protected $user_request;
 
- 	public static function fetchUserData() {
-    	$tree = [];
+ 	public static function fetchUserRequest() {
     	$url = 'https://jsonplaceholder.typicode.com/users';
-
-    	$curl = curl_init();
-    	curl_setopt($curl, CURLOPT_URL, $url);
-    	curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-
-    	$result = curl_exec($curl);
-
+        $status = "OK";
+        $output= [];
+        $records= self::fetch($url);
     
-    	if(!$result){
-    		die("Connection Failure");
+    	if(!$records) {
+            $status = 'ERROR';
+            $output['Message'] = "Sorry, we couldn't connect to the user server";
     	}
-    	curl_close($curl);
-   
-    	return $result;
+        else{
+            $output['Records'] = $records;    
+        }
+        $output['Result'] = $status;
+        
+    	return json_encode($output);
  	}
+
+    protected static function fetch(string $fetch_url){
+        // reusable curl based fetch function
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $fetch_url);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return ($result===false)? false : json_decode($result);
+
+    }
 
 	public function listUserData(){
 
- 		if(!isset($this->request)){
- 			$this->request = self::fetchUserData();
+ 		if(!isset($this->user_request)){
+ 			$this->user_request = self::fetchUserRequest();
  		} 
- 		header('Content-Type: application/json');
+        print $this->user_request;
  		
  	}
 
