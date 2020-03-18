@@ -1,0 +1,41 @@
+{
+    "name": "RapidAgileSoftware/ras-user-fetcher",
+    "description": "Fetches Users",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "RapidAgileSoftware\\RasUserFetcher\\": "."
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RapidAgileSoftware\\RasUserFetcher\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.4",
+        "crazyfactory/sniffs": "^1.3",
+        "phpunit/phpunit": "7.0"
+    },
+    "repositories": [
+		{
+		
+		}
+	],
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Jens Krause",
+            "email": "jens@rasta.online"
+        }
+    ],
+    "scripts": {
+        "test": "codecept run",
+        "test:coverage": "codecept run unit --coverage --coverage-xml --coverage-html",
+        "lint": "phpcbf --standard=phpcs.xml",
+        "lint:fix": "phpcbf --standard=phpcs.xml"
+    }
+}
