@@ -1,26 +1,68 @@
 <?php
+define( 'RAS_USER_FETCHER_API_URL', 'https://jsonplaceholder.typicode.com/users');
 
 class RasUserFetcherApi {
 
     protected $user_request;
 
  	public static function fetchUserRequest() {
-    	$url = 'https://jsonplaceholder.typicode.com/users';
-        $status = "OK";
-        $output= [];
-        $records= self::fetch($url);
+        $records= self::fetch(RAS_USER_FETCHER_API_URL);
     
     	if(!$records) {
-            $status = 'ERROR';
-            $output['Message'] = "Sorry, we couldn't connect to the user server";
+            return self::errorResponse("Sorry, we couldn't connect to the user data server. Please scream in anger now.");
     	}
         else{
-            $output['Records'] = $records;    
+            return json_encode(['Result'=>"OK", 'Records' => $records]); 
         }
-        $output['Result'] = $status;
-        
-    	return json_encode($output);
  	}
+
+    public static function fetchUserDetails(int $id) {
+        $url = RAS_USER_FETCHER_API_URL.'/'.$id;
+        $records= self::fetch($url);
+    
+        if(!$records) {
+            return self::errorResponse("Sorry, we couldn't fetch the Users details");
+        }
+        else{
+            return json_encode(['Result'=>"OK", 'Records' => [$records]]); 
+        }
+    }
+
+    public static function fetchUserPosts(int $id) {
+        $url = RAS_USER_FETCHER_API_URL.'/'.$id.'/posts';
+        $records= self::fetch($url);
+    
+        if(!$records) {
+            return self::errorResponse("Sorry, we couldn't fetch the Users posts");
+        }
+        else{
+            return json_encode(['Result'=>"OK", 'Records' => $records]); 
+        }
+    }
+
+    public static function fetchUserAlbums(int $id) {
+        $url = RAS_USER_FETCHER_API_URL.'/'.$id.'/albums';
+        $records= self::fetch($url);
+    
+        if(!$records) {
+            return self::errorResponse("Sorry, we couldn't fetch the Users albums");
+        }
+        else{
+            return json_encode(['Result'=>"OK", 'Records' => $records]); 
+        }
+    }
+
+    public static function fetchUserTodos(int $id) {
+        $url = RAS_USER_FETCHER_API_URL.'/'.$id.'/posts';
+        $records= self::fetch($url);
+    
+        if(!$records) {
+            return self::errorResponse("Sorry, we couldn't fetch the Users ToDos");
+        }
+        else{
+            return json_encode(['Result'=>"OK", 'Records' => $records]); 
+        }
+    }
 
     protected static function fetch(string $fetch_url){
         // reusable curl based fetch function
@@ -34,21 +76,48 @@ class RasUserFetcherApi {
 
     }
 
-	public function listUserData(){
-
- 		if(!isset($this->user_request)){
- 			$this->user_request = self::fetchUserRequest();
- 		} 
-        print $this->user_request;
- 		
- 	}
+    public static function errorResponse(string $message){
+        return json_encode(['Result'=>"Error", 'Message' => $message]);
+    }
 
 }
 
 $action = $_GET['action']?? false;
 
-if($action=='list-users'){
-	$api=new RasUserFetcherApi();
-	$api->listUserData();
-	die();
+if($action)
+{
+    if($action=='list-users'){
+        print RasUserFetcherApi::fetchUserRequest();
+    }
+    else{
+        // these actions require a valid integer user-id
+        $user_id = intval($_GET['id']) ?? 0;
+        if($user_id>0){
+            // api stuff
+            switch ($action) {
+                case 'user-details':
+                print RasUserFetcherApi::fetchUserDetails($user_id);
+                break;
+            case 'user-posts':
+                print RasUserFetcherApi::fetchUserPosts($user_id);
+                break;
+            case 'user-todos':
+                 print RasUserFetcherApi::fetchUserTodos($user_id);
+                break;
+            case 'user-albums':
+                 print RasUserFetcherApi::fetchUserAlbums($user_id);
+                break;
+            default:
+                //requested action not recognised
+                print RasUserFetcherApi::errorResponse("Sorry, we can't ".$action.". Something went wrong here");
+                break;
+            }
+        } else {
+            // user id is invalid
+            print RasUserFetcherApi::errorResponse("Sorry, this user-id is invalid");
+        }
+        //
+    }
+
+
 }

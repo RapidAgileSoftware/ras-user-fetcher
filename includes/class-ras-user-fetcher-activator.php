@@ -104,7 +104,7 @@ class Ras_User_Fetcher_Activator {
       $userData = [];
       $data =[
         'user_endpoint' => plugins_url( 'RasUserFetcherApi.php?action=list-users' , __FILE__ ),
-        'user_data' => $userData
+        'user_api' =>  plugins_url( 'RasUserFetcherApi.php' , __FILE__ ),
       ];
       wp_localize_script( 'ras-user-fetcher-core', 'php_vars', $data );
     } 
