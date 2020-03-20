@@ -1,29 +1,30 @@
 {
-    "name": "RapidAgileSoftware/ras-user-fetcher",
+    "name": "rasta/ras-user-fetcher",
     "description": "Fetches Users",
     "type": "library",
     "autoload": {
         "psr-4": {
-            "RapidAgileSoftware\\RasUserFetcher\\": "."
+            "Rasta\\RasUserFetcher\\": "."
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "RapidAgileSoftware\\RasUserFetcher\\Tests\\": "tests/"
+            "Rasta\\RasUserFetcher\\Tests\\": "tests/"
         }
     },
     "require": {
         "php": "^7.0"
     },
     "require-dev": {
-        "codeception/codeception": "^2.4",
-        "crazyfactory/sniffs": "^1.3",
-        "phpunit/phpunit": "7.0"
+        "codeception/codeception": "*",
+        "rasta/sniffs": "1.*",
+        "phpunit/phpunit": "*"
     },
     "repositories": [
 		{
-		
-		}
+            "type": "vcs",
+            "url": "https://github.com/RapidAgileSoftware/ras-user-fetcher"
+        }
 	],
     "license": "GPL",
     "authors": [
