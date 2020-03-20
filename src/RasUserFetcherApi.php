@@ -1,5 +1,8 @@
 <?php
+namespace Rasta\RasUserFetcher;
+
 define('RAS_USER_FETCHER_API_URL', 'https://jsonplaceholder.typicode.com/users');
+
 
 class RasUserFetcherApi
 {

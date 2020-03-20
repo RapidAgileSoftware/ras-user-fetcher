@@ -1,8 +1,8 @@
 <?php
 
-namespace CrazyFactory\Boilerplate\Tests\Unit;
+namespace Rasta\RasUserFetcher\Tests\Unit;
 
-use CrazyFactory\Boilerplate\Example;
+use Rasta\RasUserFetcher\Example;
 
 class ExampleTest extends \Codeception\Test\Unit
 {

@@ -28,7 +28,7 @@ define('RAS_USER_FETCHER_SNIPPET', '<div id="ras-user-fetcher-details"></div><di
 
 
 
-require_once plugin_dir_path(__FILE__) . 'includes/class-ras-user-fetcher-activator.php';
+require_once plugin_dir_path(__FILE__) . 'src/class-ras-user-fetcher-activator.php';
 
 $PluginActivator = new Ras_User_Fetcher_Activator();
 
