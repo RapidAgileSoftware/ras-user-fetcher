@@ -18,7 +18,8 @@
     "require-dev": {
         "codeception/codeception": "*",
         "rasta/sniffs": "1.*",
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "codeception/module-asserts": "^1.1"
     },
     "repositories": [
 		{
