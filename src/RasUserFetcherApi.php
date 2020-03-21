@@ -1,4 +1,5 @@
 <?php
+
 namespace Rasta\RasUserFetcher;
 
 define('RAS_USER_FETCHER_API_URL', 'https://jsonplaceholder.typicode.com/users');
@@ -12,7 +13,7 @@ class RasUserFetcherApi
     public static function fetchUserRequest()
     {
         $records = self::fetch(RAS_USER_FETCHER_API_URL);
-    
+
         if (!$records) {
             return self::errorResponse("Sorry, we couldn't connect to the user data server. Please scream in anger now.");
         }
@@ -25,7 +26,7 @@ class RasUserFetcherApi
     {
         $url = RAS_USER_FETCHER_API_URL . '/' . $id;
         $records = self::fetch($url);
-    
+
         if (!$records) {
             return self::errorResponse("Sorry, we couldn't fetch the Users details");
         }
@@ -38,7 +39,7 @@ class RasUserFetcherApi
     {
         $url = RAS_USER_FETCHER_API_URL . '/' . $id . '/posts';
         $records = self::fetch($url);
-    
+
         if (!$records) {
             return self::errorResponse("Sorry, we couldn't fetch the Users posts");
         }
@@ -51,7 +52,7 @@ class RasUserFetcherApi
     {
         $url = RAS_USER_FETCHER_API_URL . '/' . $id . '/albums';
         $records = self::fetch($url);
-    
+
         if (!$records) {
             return self::errorResponse("Sorry, we couldn't fetch the Users albums");
         }
@@ -64,7 +65,7 @@ class RasUserFetcherApi
     {
         $url = RAS_USER_FETCHER_API_URL . '/' . $id . '/posts';
         $records = self::fetch($url);
-    
+
         if (!$records) {
             return self::errorResponse("Sorry, we couldn't fetch the Users ToDos");
         }
@@ -82,7 +83,7 @@ class RasUserFetcherApi
         curl_setopt($ch, CURLOPT_URL, $fetch_url);
         $result = curl_exec($ch);
         curl_close($ch);
-        
+
         return ($result === false) ? false : json_decode($result);
     }
 
