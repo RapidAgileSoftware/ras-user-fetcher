@@ -25,7 +25,7 @@ class Activator
     public function getEndpoint():string
     {
         if (!isset($this->endpoint)) {
-            $this->endpoint = defined('RAS_USER_FETCHER_ENDPOINT')? RAS_USER_FETCHER_ENDPOINT:'ras-user-fetcher';
+            $this->endpoint = defined('RAS_USER_FETCHER_ENDPOINT') ? RAS_USER_FETCHER_ENDPOINT : 'ras-user-fetcher';
         }
 
         return $this->endpoint;
@@ -76,7 +76,7 @@ class Activator
     public function getPageTitle():string
     {
         if (!isset($this->page_title)) {
-            $this->page_title = defined('RAS_USER_FETCHER_PAGETITLE')? RAS_USER_FETCHER_PAGETITLE: 'Users Table';
+            $this->page_title = defined('RAS_USER_FETCHER_PAGETITLE') ? RAS_USER_FETCHER_PAGETITLE : 'Users Table';
         }
 
         return $this->page_title;
@@ -92,7 +92,7 @@ class Activator
     public function getSnippet():string
     {
         if (!isset($this->snippet)) {
-            $this->snippet = defined('RAS_USER_FETCHER_SNIPPET')? RAS_USER_FETCHER_SNIPPET :
+            $this->snippet = defined('RAS_USER_FETCHER_SNIPPET') ? RAS_USER_FETCHER_SNIPPET :
             '<div id="ras-user-fetcher-details" /><div id="ras-user-fetcher" />';
         }
 
