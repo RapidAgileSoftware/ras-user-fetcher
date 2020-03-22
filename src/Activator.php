@@ -7,7 +7,13 @@ class Activator
     protected $endpoint;
     // DependencyHandler class
     protected $handler;
-    // reference to fetch user page
+    /***
+    * page can have 3 states:
+    *   null : not fetched yet
+    *   array: containing the page information
+    *   false: tried to fetch witch current endpoint, but no result found
+    * to cache bust use setEndpoint first
+    **/
     protected $page;
     // page title of fetch user page
     protected $page_title;
@@ -25,7 +31,7 @@ class Activator
     public function getEndpoint():string
     {
         if (!isset($this->endpoint)) {
-            $this->endpoint = defined('RAS_USER_FETCHER_ENDPOINT') ? RAS_USER_FETCHER_ENDPOINT : 'ras-user-fetcher';
+            $this->endpoint = 'ras-user-fetcher';
         }
 
         return $this->endpoint;
@@ -33,7 +39,11 @@ class Activator
 
     public function setEndpoint(?string $endpoint_name):self
     {
-        $this->endpoint = $endpoint_name;
+        if ($this->endpoint !== $endpoint_name) {
+            $this->endpoint = $endpoint_name;
+            // reset chached page for new endpoint
+            $this->page = null;
+        }
 
         return $this;
     }
@@ -58,15 +68,14 @@ class Activator
     {
         // check if we fetched the page already
         if (!isset($this->page)) {
-          // set the page or false if non-existent
-            // ToDo: use handler
-            $this->page = get_page_by_path($this->endpoint) ?? false;
+            // fetch page from wp via handler for code speparation
+            $this->page = $this->getHandler()::getPageByPath($this->getEndpoint()) ?? false;
         }
 
         return $this->page;
     }
 
-    public function setPage($page):self
+    public function setPage(?array $page):self
     {
         $this->page = $page;
 
@@ -76,7 +85,7 @@ class Activator
     public function getPageTitle():string
     {
         if (!isset($this->page_title)) {
-            $this->page_title = defined('RAS_USER_FETCHER_PAGETITLE') ? RAS_USER_FETCHER_PAGETITLE : 'Users Table';
+            $this->page_title = 'Users Table';
         }
 
         return $this->page_title;
@@ -92,8 +101,7 @@ class Activator
     public function getSnippet():string
     {
         if (!isset($this->snippet)) {
-            $this->snippet = defined('RAS_USER_FETCHER_SNIPPET') ? RAS_USER_FETCHER_SNIPPET :
-            '<div id="ras-user-fetcher-details" /><div id="ras-user-fetcher" />';
+            $this->snippet = '<div id="ras-user-fetcher-details" /><div id="ras-user-fetcher" />';
         }
 
         return $this->snippet;
@@ -105,4 +113,43 @@ class Activator
 
         return $this;
     }
+
+    /**
+    * Exposed Activation step
+    *
+    **/
+    public function activate()
+    {
+        return $this->createPage();
+    }
+
+    protected function createPage()
+    {
+        if (!$this->pageExists()) {
+            // create page for the user fetcher
+            $page = [
+                'post_title'  => $this->getPageTitle(),
+                'post_name'   => $this->getEndpoint(),
+                'post_content'=> $this->getSnippet(),
+                'post_status' => 'publish',
+                'post_type'   => 'page'
+            ];
+            // get new page id from Handler
+            $page_id = $this->getHandler()::insertPost($page);
+            if($page_id>0)
+            {
+                $page['post_id'] = $page_id;
+                $this->setPage($page);
+                return true;
+            }
+        }
+           
+        return false;
+    }
+
+    public function pageExists():bool
+    {
+        return ($this->getPage() === false) ? false : true;
+    }
+
 }

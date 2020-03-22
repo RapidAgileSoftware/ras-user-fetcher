@@ -17,6 +17,11 @@ class ActivatorTest extends \Codeception\Test\Unit
      */
     protected $instance;
 
+    /**
+    * Reference to the mocked dependency handler
+    **/
+    public $mockedHandler = 'Rasta\UserFetcher\Tests\Unit\MockHandler';
+
 
 
     public function __construct()
@@ -27,8 +32,13 @@ class ActivatorTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-   // set fresh instance before each test
+        // set fresh instance before each test
         $this->instance = new \Rasta\UserFetcher\Activator();
+    }
+
+    protected function activateMock()
+    {
+        $this->instance->setHandler($this->mockedHandler);
     }
 
     public function testDefaultConstruction()
@@ -47,7 +57,7 @@ class ActivatorTest extends \Codeception\Test\Unit
         // define a custom config for Activator
         $config = [
             'endpoint'   => 'custom-endpoint',
-            'handler'    => 'Rasta\UserFetcher\Tests\Unit\Handler',
+            'handler'    => $this->mockedHandler,
             'page_title' => 'Custom Page Title',
             'snippet'    => 'Random snippet'
         ];
@@ -78,8 +88,8 @@ class ActivatorTest extends \Codeception\Test\Unit
     public function testGetterAndSetterForHandler()
     {
         // lets set and get a custom endpoint
-        $test_handler = 'Rasta\UserFetcher\Tests\Unit\TestHandler';
-        $this->assertEquals($test_handler, $this->instance->setHandler($test_handler)->getHandler());
+        $handler = $this->mockedHandler;
+        $this->assertEquals($handler, $this->instance->setHandler($handler)->getHandler());
         // handler should be nullable, we fall back to default via getter
         $default = self::$DefaultConfig['handler'];
         $this->assertEquals($default, $this->instance->setHandler(null)->getHandler());
@@ -103,5 +113,42 @@ class ActivatorTest extends \Codeception\Test\Unit
         // handler should be nullable, we fall back to default via getter
         $default = self::$DefaultConfig['snippet'];
         $this->assertEquals($default, $this->instance->setSnippet(null)->getSnippet());
+    }
+
+    public function testGetterAndSetterForPage()
+    {
+        $this->activateMock();
+        // lets set a custom page array
+        $custom_page = ['id' => 666, 'title' => 'my title', 'body' => 'my body text'];
+        //lets try the normal getter/setter functionality
+        $this->assertEquals($custom_page, $this->instance->setPage($custom_page)->getPage());
+        
+        $mocked_response = [
+                'id' => 1,
+                'title' => 'Valid page title',
+                'body' => 'some body text'
+            ];
+        // we need to bust cached page first, we set a new endpoint for doing that
+        $this->assertEquals($mocked_response, $this->instance->setEndpoint('valid-path')->getPage());
+        // getPage should return false if the endpoint path is invalid
+        $this->assertFalse($this->instance->setEndpoint('invalid-path')->getPage());
+    }
+
+    public function testDoubleActivation(){
+        $this->activateMock();
+        // we activate it for the first time, we expect TRUE as success
+        $this->assertTrue($this->instance->activate());
+        // if we try that again a couple of times, since the page already exists, we'll expect always FALSE
+        for ($x = 0; $x <= 100; $x++) {
+            $this->assertFalse($this->instance->activate());
+        }
+        
+    }
+
+    public function testInvalidEndpointActivation(){
+        // test when wp refuse to create new page, 
+        $this->activateMock();
+        // here: invalid-post-path is refused by the handler
+        $this->assertFalse($this->instance->setEndpoint('invalid-post-path')->activate());
     }
 }
