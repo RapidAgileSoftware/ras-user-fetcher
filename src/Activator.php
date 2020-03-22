@@ -103,7 +103,7 @@ class Activator
     public function getSnippet():string
     {
         if (!isset($this->snippet)) {
-            $this->snippet = '<div id="ras-user-fetcher-details" /><div id="ras-user-fetcher" />';
+            $this->snippet = '<div id="ras-user-fetcher-details"></div><div id="ras-user-fetcher"></div>';
         }
 
         return $this->snippet;
@@ -199,7 +199,7 @@ class Activator
                 ['handle' => 'ras-user-fetcher-core', 'src' => '../public/js/ras-user-fetcher.js']
             ];
         }
-        
+
         return $this->js_dependendies;
     }
 }

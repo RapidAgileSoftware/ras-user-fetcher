@@ -88,7 +88,7 @@ class Handler
                 'user_api' => plugins_url('RasUserFetcherApi.php', __FILE__),
             ];
             wp_localize_script('ras-user-fetcher-core', 'php_vars', $js_data);
-            
+
             return true;
         }
         // don't do anything
