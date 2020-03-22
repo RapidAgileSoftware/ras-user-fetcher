@@ -134,7 +134,8 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->assertFalse($this->instance->setEndpoint('invalid-path')->getPage());
     }
 
-    public function testDoubleActivation(){
+    public function testDoubleActivation()
+    {
         $this->activateMock();
         // we activate it for the first time, we expect TRUE as success
         $this->assertTrue($this->instance->activate());
@@ -142,11 +143,11 @@ class ActivatorTest extends \Codeception\Test\Unit
         for ($x = 0; $x <= 100; $x++) {
             $this->assertFalse($this->instance->activate());
         }
-        
     }
 
-    public function testInvalidEndpointActivation(){
-        // test when wp refuse to create new page, 
+    public function testInvalidEndpointActivation()
+    {
+        // test when wp refuse to create new page,
         $this->activateMock();
         // here: invalid-post-path is refused by the handler
         $this->assertFalse($this->instance->setEndpoint('invalid-post-path')->activate());

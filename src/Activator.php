@@ -118,28 +118,28 @@ class Activator
     * Exposed Activation step
     *
     **/
-    public function activate()
+    public function activate():bool
     {
         return $this->createPage();
     }
 
-    protected function createPage()
+    protected function createPage():bool
     {
         if (!$this->pageExists()) {
             // create page for the user fetcher
             $page = [
                 'post_title'  => $this->getPageTitle(),
                 'post_name'   => $this->getEndpoint(),
-                'post_content'=> $this->getSnippet(),
+                'post_content' => $this->getSnippet(),
                 'post_status' => 'publish',
                 'post_type'   => 'page'
             ];
             // get new page id from Handler
             $page_id = $this->getHandler()::insertPost($page);
-            if($page_id>0)
-            {
+            if ($page_id > 0) {
                 $page['post_id'] = $page_id;
                 $this->setPage($page);
+                
                 return true;
             }
         }
@@ -151,5 +151,4 @@ class Activator
     {
         return ($this->getPage() === false) ? false : true;
     }
-
 }

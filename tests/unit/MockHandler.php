@@ -30,6 +30,6 @@ class MockHandler extends Handler
     **/
     public static function insertPost(array $post_config):int
     {
-        return ($post_config['post_name'] === 'invalid-post-path')? 0 : 42;
+        return ($post_config['post_name'] === 'invalid-post-path') ? 0 : 42;
     }
 }
