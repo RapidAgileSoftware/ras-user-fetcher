@@ -41,7 +41,7 @@ class Activator
     {
         if ($this->endpoint !== $endpoint_name) {
             $this->endpoint = $endpoint_name;
-            // reset chached page for new endpoint
+            // reset cached page for new endpoint
             $this->page = null;
         }
 
@@ -137,15 +137,45 @@ class Activator
             // get new page id from Handler
             $page_id = $this->getHandler()::insertPost($page);
             if ($page_id > 0) {
-                $page['post_id'] = $page_id;
+                $page['ID'] = $page_id;
                 $this->setPage($page);
-                
+
                 return true;
             }
         }
-           
+
         return false;
     }
+    /**
+    * Exposed deactivation step
+    *
+    **/
+    public function deactivate():bool
+    {
+        return $this->deletePage();
+    }
+
+    protected function deletePage():bool
+    {
+        $page = $this->getPage();
+        // nothing to clean up, early finish
+        if ($page === false) {
+            return false;
+        }
+
+        $pageID = intval($page['ID']) ?? 0;
+        if ($pageID > 0) {
+            $this->getHandler()::deletePost($pageID);
+            $this->page = false;
+            $this->getHandler()::resetPostData();
+            
+            return true;
+        }
+        
+        return false;
+    }
+
+
 
     public function pageExists():bool
     {

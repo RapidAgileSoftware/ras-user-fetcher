@@ -122,7 +122,7 @@ class ActivatorTest extends \Codeception\Test\Unit
         $custom_page = ['id' => 666, 'title' => 'my title', 'body' => 'my body text'];
         //lets try the normal getter/setter functionality
         $this->assertEquals($custom_page, $this->instance->setPage($custom_page)->getPage());
-        
+
         $mocked_response = [
                 'id' => 1,
                 'title' => 'Valid page title',
@@ -151,5 +151,25 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->activateMock();
         // here: invalid-post-path is refused by the handler
         $this->assertFalse($this->instance->setEndpoint('invalid-post-path')->activate());
+    }
+
+    public function testDoubleDeactivation()
+    {
+        $this->activateMock();
+        // We activate it, then we deactivate it
+        $this->instance->activate();
+        // should return TRUE
+        $this->assertTrue($this->instance->deactivate());
+        // try it again multiple times, should be false every time
+        for ($x = 0; $x <= 100; $x++) {
+            $this->assertFalse($this->instance->deactivate());
+        }
+    }
+
+    public function testInvalidDeactivation()
+    {
+        $this->activateMock();
+        // deactivate without activate should be False
+        $this->assertFalse($this->instance->deactivate());
     }
 }

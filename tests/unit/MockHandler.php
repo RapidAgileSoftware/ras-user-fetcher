@@ -20,7 +20,7 @@ class MockHandler extends Handler
                 'body' => 'some body text'
             ];
         }
-        
+
         return null;
     }
 
@@ -31,5 +31,21 @@ class MockHandler extends Handler
     public static function insertPost(array $post_config):int
     {
         return ($post_config['post_name'] === 'invalid-post-path') ? 0 : 42;
+    }
+    /**
+    *   mocked delete post
+    *   returns false for id 666, true otherwise
+    **/
+    public static function deletePost(int $post_id):bool
+    {
+        return (!($post_id === 666)) ? true : false;
+    }
+    /**
+    *   mocked reset post data
+    *   does nothing at all
+    **/
+    public static function resetPostData():void
+    {
+        // insert funny joke here or do nothing
     }
 }

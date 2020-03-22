@@ -111,9 +111,4 @@ class Handler
     {
         wp_reset_postdata();
     }
-
-    public static function test():string
-    {
-        return 'hello rasta';
-    }
 }
