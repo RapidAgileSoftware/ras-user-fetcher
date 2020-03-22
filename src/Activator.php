@@ -7,6 +7,8 @@ class Activator
     protected $endpoint;
     // DependencyHandler class
     protected $handler;
+    // holds a array of js files to load
+    public $js_dependendies;
     /***
     * page can have 3 states:
     *   null : not fetched yet
@@ -168,17 +170,36 @@ class Activator
             $this->getHandler()::deletePost($pageID);
             $this->page = false;
             $this->getHandler()::resetPostData();
-            
+
             return true;
         }
-        
+
         return false;
     }
-
-
 
     public function pageExists():bool
     {
         return ($this->getPage() === false) ? false : true;
+    }
+
+    public function loadScripts():bool
+    {
+        // call handler to enqueue scipts
+        // provide current endpoint and JS dependencies
+        // returns true if something was enqueued, false otherwise
+        return self::getHandler()::enqueueScripts($this->getEndpoint(), $this->getJSDependencies());
+    }
+
+    public function getJSDependencies():array
+    {
+        if (!isset($this->js_dependendies)) {
+            $this->js_dependendies = [
+                ['handle' => 'ras-user-fetcher-ui', 'src' => '../public/js/jquery-ui.min.js'],
+                ['handle' => 'ras-user-fetcher-jtable', 'src' => '../public/js/jquery.jtable.min.js'],
+                ['handle' => 'ras-user-fetcher-core', 'src' => '../public/js/ras-user-fetcher.js']
+            ];
+        }
+        
+        return $this->js_dependendies;
     }
 }

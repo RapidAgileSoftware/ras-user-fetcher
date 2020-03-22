@@ -51,10 +51,10 @@ class Ras_User_Fetcher_Activator
                 'post_type'   => 'page'
             ];
             wp_insert_post($page_userfetcher);
-            
+
             return true;
         }
-        
+
         return false;
     }
 
@@ -88,7 +88,7 @@ class Ras_User_Fetcher_Activator
             $this->page = false;
           // refresh post data
             wp_reset_postdata();
-        
+
             return true;
         }
     }
@@ -102,10 +102,6 @@ class Ras_User_Fetcher_Activator
             wp_enqueue_script('ras-user-fetcher-core', plugins_url('../public/js/ras-user-fetcher.js', __FILE__), ['jquery']);
           // pass some data into js
 
-
-      
-            require_once plugin_dir_path(__FILE__) . 'RasUserFetcherApi.php';
-            $userData = [];
             $data = [
             'user_endpoint' => plugins_url('RasUserFetcherApi.php?action=list-users', __FILE__),
             'user_api' => plugins_url('RasUserFetcherApi.php', __FILE__),
@@ -141,28 +137,28 @@ class Ras_User_Fetcher_Activator
           // set the page or false if non-existent
             $this->page = get_page_by_path($this->endpoint) ?? false;
         }
-      
+
         return $this->page;
     }
 
     public function set_endpoint(string $endpoint)
     {
         $this->endpoint = $endpoint;
-      
+
         return $this;
     }
 
     public function set_snippet(string $snippet)
     {
         $this->snippet = $snippet;
-      
+
         return $this;
     }
 
     public function set_page_title(string $page_title)
     {
         $this->page_title = $page_title;
-      
+
         return $this;
     }
 }

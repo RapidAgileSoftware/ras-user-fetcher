@@ -59,23 +59,40 @@ class Handler
     }
 
     /**
+     * validates that we are on the correct page
      * enqueues a list of scripts into wordpress
-     * it need to have the form:
+     * the list need to have the form:
      * $script_list = [
      *     ['handle'=> 'my_script_handle', 'src'=>'my_first.js'],
      *     ['handle'=> 'my_other_script_handle', 'src'=>'my_second.js']
      * ]
+     * @param  string $endpoint
      * @param  array $script_list
      * @param bool $jquery_dependend : do these scripts need jquery?
-     * @return void
+     * @return bool true if scripts enqueued, false otherwise
      */
-    public static function enqueueScripts(array $script_list, bool $jquery_dependend = true):void
+    public static function enqueueScripts(string $endpoint, array $script_list, bool $jquery_dependend = true):bool
     {
-        $dependencies = ($jquery_dependend) ? ['jquery'] : [];
+        global $post;
+        // only enqueue scripts at the endpoint page
+        if (is_page() && $post->post_name === $endpoint) {
+            // jquery dependend?
+            $dep = ($jquery_dependend) ? ['jquery'] : [];
 
-        foreach ($script_list as $script) {
-            wp_enqueue_script($script['handle'], $script['src'], $dependencies);
+            foreach ($script_list as $script) {
+                wp_enqueue_script($script['handle'], plugins_url($script['src'], __FILE__), $dep);
+            }
+            //pass some data to js via l18n
+            $js_data = [
+                'user_endpoint' => plugins_url('RasUserFetcherApi.php?action=list-users', __FILE__),
+                'user_api' => plugins_url('RasUserFetcherApi.php', __FILE__),
+            ];
+            wp_localize_script('ras-user-fetcher-core', 'php_vars', $js_data);
+            
+            return true;
         }
+        // don't do anything
+        return false;
     }
 
     /**

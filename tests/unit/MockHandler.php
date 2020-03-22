@@ -15,9 +15,12 @@ class MockHandler extends Handler
     {
         if ($page_path === 'valid-path') {
             return [
-                'id' => 1,
-                'title' => 'Valid page title',
-                'body' => 'some body text'
+                'ID' => 1,
+                'post_title'  => 'Valid Post Title',
+                'post_name'   => 'valid-path',
+                'post_content' => '<span id="something" />',
+                'post_status' => 'publish',
+                'post_type'   => 'page'
             ];
         }
 
@@ -47,5 +50,10 @@ class MockHandler extends Handler
     public static function resetPostData():void
     {
         // insert funny joke here or do nothing
+    }
+
+    public static function enqueueScripts(string $endpoint, array $script_list, bool $jquery_dependend = true):bool
+    {
+        return ($endpoint === 'valid-path') ? true : false;
     }
 }

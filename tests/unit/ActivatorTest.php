@@ -124,9 +124,12 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->assertEquals($custom_page, $this->instance->setPage($custom_page)->getPage());
 
         $mocked_response = [
-                'id' => 1,
-                'title' => 'Valid page title',
-                'body' => 'some body text'
+                'ID' => 1,
+                'post_title'  => 'Valid Post Title',
+                'post_name'   => 'valid-path',
+                'post_content' => '<span id="something" />',
+                'post_status' => 'publish',
+                'post_type'   => 'page'
             ];
         // we need to bust cached page first, we set a new endpoint for doing that
         $this->assertEquals($mocked_response, $this->instance->setEndpoint('valid-path')->getPage());
@@ -171,5 +174,33 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->activateMock();
         // deactivate without activate should be False
         $this->assertFalse($this->instance->deactivate());
+    }
+
+    public function testGetJSDependencies()
+    {
+        $default = [
+            ['handle' => 'ras-user-fetcher-ui', 'src' => '../public/js/jquery-ui.min.js'],
+            ['handle' => 'ras-user-fetcher-jtable', 'src' => '../public/js/jquery.jtable.min.js'],
+            ['handle' => 'ras-user-fetcher-core', 'src' => '../public/js/ras-user-fetcher.js']
+        ];
+        // test for the default
+        $this->assertEquals($default, $this->instance->getJSDependencies());
+        //now set custom set of dependencies
+        $this->instance->js_dependendies = [];
+        $this->assertEquals([], $this->instance->getJSDependencies());
+        $custom = [ ['handle' => 'new-handle', 'src' => '../public/js/any.js'] ];
+        $this->instance->js_dependendies = $custom;
+        $this->assertEquals($custom, $this->instance->getJSDependencies());
+    }
+
+    public function testLoadScripts()
+    {
+        $this->activateMock();
+        $valid = 'valid-path';
+        $invalid = 'invalid-path';
+        // in a valid endpoint we get true
+        $this->assertTrue($this->instance->setEndpoint($valid)->loadScripts());
+        // otherwise false
+        $this->assertFalse($this->instance->setEndpoint($invalid)->loadScripts());
     }
 }
