@@ -54,8 +54,9 @@ class ApiTest extends \Codeception\Test\Unit
         $this->assertEquals($default, $this->instance->setHandler(null)->getHandler());
     }
 
-    public function testErrorResponse(){
-        $message = "test message";
+    public function testErrorResponse()
+    {
+        $message = 'test message';
         $expected = json_encode(['Result' => 'Error', 'Message' => $message]);
 
         $this->assertEquals($expected, \Rasta\UserFetcher\Api::errorResponse($message));
