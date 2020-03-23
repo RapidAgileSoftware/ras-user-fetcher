@@ -127,4 +127,33 @@ class Handler
     {
         wp_reset_postdata();
     }
+
+    public static function getTransient(string $key)
+    {
+        var_dump($key);
+        try {
+            echo 'hallo';
+            $return =get_transient($key);
+            echo 'again';
+        } 
+        catch (Exception $e) {
+            var_dump($e);
+            var_dump($key);
+            $return = 'Ooopsi'; 
+        }
+        var_dump($return);
+        return $return;
+    }
+
+    public static function setTransient(string $key, mixed $data, int $expires = 0)
+    {
+        // by default does the transient NOT expire
+        // use $expire to set expire length in sec
+        return set_transient($key, $data, $expires);
+    }
+
+    public static function test()
+    {
+        return 'Rasta Pasta ist lecker';
+    }
 }
