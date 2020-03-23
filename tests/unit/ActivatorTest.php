@@ -9,7 +9,7 @@ class ActivatorTest extends \Codeception\Test\Unit
         'endpoint' => 'ras-user-fetcher',
         'handler' => 'Rasta\UserFetcher\Handler',
         'page_title' => 'Users Table',
-        'snippet' => '<div id="ras-user-fetcher-details" /><div id="ras-user-fetcher" />'
+        'snippet' => '<div id="ras-user-fetcher-details"></div><div id="ras-user-fetcher"></div>'
     ];
 
     /**

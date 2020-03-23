@@ -4,10 +4,17 @@ namespace Rasta\UserFetcher\Tests\Unit;
 
 class ApiTest extends \Codeception\Test\Unit
 {
+    
+    protected static $DefaultConfig = [
+        'fetchUrl' => 'https://jsonplaceholder.typicode.com/users',
+        'handler' => 'Rasta\UserFetcher\Handler',
+    ];
+
     /**
      * @var \Rasta\UserFetcher\Api
      */
     protected $instance;
+
 
     /**
     * Reference to the mocked dependency handler
@@ -33,9 +40,8 @@ class ApiTest extends \Codeception\Test\Unit
 
     public function testDefaultConstruction()
     {
-        $default = 'https://jsonplaceholder.typicode.com/users';
         // if we construct new Instance without params, the default config should be used
-        $this->assertEquals($default, $this->instance->fetchUrl);
+        $this->assertEquals(self::$DefaultConfig['fetchUrl'], $this->instance->fetchUrl);
     }
 
     public function testGetterAndSetterForHandler()

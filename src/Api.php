@@ -27,7 +27,7 @@ class Api
 
     public function fetchUserRequest():string
     {
-        $records = $this->getHandler()::fetch($this->fetchUrl;
+        $records = $this->getHandler()::fetch($this->fetchUrl);
 
         if (!$records) {
             return self::errorResponse("Sorry, we couldn't connect to the user data server. Please scream in anger now.");
