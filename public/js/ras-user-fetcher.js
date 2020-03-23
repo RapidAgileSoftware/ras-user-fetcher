@@ -121,8 +121,11 @@
                                         				title: "ToDo Id"
                                         			},	
                                             		title: {
-                                                		title: "Todo Title",
+                                                		title: "Todo Title"
                                                 	},
+                                                	completed:{
+                                                		title: "Completed?"
+                                                	}
                                                 	
                                         		}
                                     		}, 
@@ -142,9 +145,9 @@
     $(document).ready(function() {
     	// Initiate parent User table
     	$('#ras-user-fetcher').jtable({
-			title: 'Here are some awesome users ...',
+			title: '',
 			actions: {
-				listAction: php_vars.user_endpoint
+				listAction: php_vars.user_api +'?action=list-users'
 				},
 			fields: {
 				id: {

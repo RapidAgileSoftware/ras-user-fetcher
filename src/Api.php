@@ -1,5 +1,4 @@
 <?php
-
 namespace Rasta\UserFetcher;
 
 class Api
@@ -11,7 +10,7 @@ class Api
     public function getHandler():string
     {
         if (!isset($this->handler)) {
-            $this->handler = 'Rasta\UserFetcher\Handler';
+             $this->handler = 'Rasta\UserFetcher\Handler';
         }
 
         return $this->handler;

@@ -12,7 +12,7 @@ class Handler
      * @param  string $fetch_url url to retrieve data
      * @return array|bool fetched data or false on failure
      */
-    protected static function fetch(string $fetch_url)
+    public static function fetch(string $fetch_url)
     {
         // reusable curl based fetch function
         $ch = curl_init();
@@ -80,12 +80,11 @@ class Handler
             $dep = ($jquery_dependend) ? ['jquery'] : [];
 
             foreach ($script_list as $script) {
-                wp_enqueue_script($script['handle'], plugins_url($script['src'], __FILE__), $dep);
+                wp_enqueue_script($script['handle'], plugins_url($script['src'], __FILE__), $dep, null);
             }
             //pass some data to js via l18n
             $js_data = [
-                'user_endpoint' => plugins_url('RasUserFetcherApi.php?action=list-users', __FILE__),
-                'user_api' => plugins_url('RasUserFetcherApi.php', __FILE__),
+                'user_api' => plugins_url('../api.php', __FILE__)
             ];
             wp_localize_script('ras-user-fetcher-core', 'php_vars', $js_data);
 
