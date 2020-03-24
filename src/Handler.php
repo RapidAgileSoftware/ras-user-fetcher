@@ -7,21 +7,36 @@ namespace Rasta\UserFetcher;
  */
 class Handler
 {
-
     /**
+     * central fetch function
+     * caches the result of all URIs [default 1h=3600s]
      * @param  string $fetch_url url to retrieve data
+     * @param  int $fetch_url url to retrieve data
      * @return array|bool fetched data or false on failure
      */
-    public static function fetch(string $fetch_url)
+    public static function fetch(string $fetch_url, $cache_time = 3600)
     {
-        // reusable curl based fetch function
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, $fetch_url);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        // lets do some caching with transients
+        $cache_key = 'CACHE@_' . $fetch_url;
+        
+        $result = get_transient($cache_key);
 
+        // not cached yet
+        if ($result === false) {
+             // reusable curl based fetch function
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, $fetch_url);
+            $result = curl_exec($ch);
+            curl_close($ch);
+
+            // if we got a positive result, let's save it
+            if ($result !== false) {
+                set_transient($cache_key, $result, intval($cache_time));
+            }
+        }
+        //delete_transient($cache_key);
         return ($result === false) ? false : json_decode($result);
     }
 
@@ -80,11 +95,11 @@ class Handler
             $dep = ($jquery_dependend) ? ['jquery'] : [];
 
             foreach ($script_list as $script) {
-                wp_enqueue_script($script['handle'], plugins_url($script['src'], __FILE__), $dep, null);
+                wp_enqueue_script($script['handle'], plugins_url($script['src'], __FILE__), $dep, 'yyw');
             }
             //pass some data to js via l18n
             $js_data = [
-                'user_api' => plugins_url('../api.php', __FILE__)
+                'user_api' => admin_url('admin-ajax.php')
             ];
             wp_localize_script('ras-user-fetcher-core', 'php_vars', $js_data);
 
@@ -126,34 +141,5 @@ class Handler
     public static function resetPostData():void
     {
         wp_reset_postdata();
-    }
-
-    public static function getTransient(string $key)
-    {
-        var_dump($key);
-        try {
-            echo 'hallo';
-            $return =get_transient($key);
-            echo 'again';
-        } 
-        catch (Exception $e) {
-            var_dump($e);
-            var_dump($key);
-            $return = 'Ooopsi'; 
-        }
-        var_dump($return);
-        return $return;
-    }
-
-    public static function setTransient(string $key, mixed $data, int $expires = 0)
-    {
-        // by default does the transient NOT expire
-        // use $expire to set expire length in sec
-        return set_transient($key, $data, $expires);
-    }
-
-    public static function test()
-    {
-        return 'Rasta Pasta ist lecker';
     }
 }

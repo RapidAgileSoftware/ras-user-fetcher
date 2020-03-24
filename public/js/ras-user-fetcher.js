@@ -9,7 +9,7 @@
 		// initiate a dedicated child table
         $('#ras-user-fetcher').jtable('openChildTable', $('#ras-user-fetcher-details'),
             {
-                title: '<h3>'+user.name + '</h3>',
+                title: '<h3>'+user.name +'</h3>',
                 	actions: {
                     	listAction: php_vars.user_api +'?action=user-details&id='+ user.id,
                     },
@@ -29,16 +29,16 @@
 						},
 						address: {
 							title: 'Address',
-							display: function(user){
-								var address = $("<span>"+user.record.address.street+"<br>"+user.record.address.suite+"<br>"+user.record.address.zipcode+" "+user.record.address.city+"<br> Geo:<br> Lat:"+user.record.address.geo.lat+"<br> Long:"+user.record.address.geo.lng+"</span>");
+							display: function(){
+								var address = $("<span>"+user.address.street+"<br>"+user.address.suite+"<br>"+user.address.zipcode+" "+user.address.city+"<br> Geo:<br> Lat:"+user.address.geo.lat+"<br> Long:"+user.address.geo.lng+"</span>");
 								return address;
 							},
 						},
 						company: {
 							title: 'Company',
 							width: '20%',
-							display: function(user){
-								var company = $("<span><b>"+user.record.company.name+"</b><br><i>"+user.record.company.catchPhrase+"</i><br>"+user.record.company.bs+"</span>");
+							display: function(){
+								var company = $("<span><b>"+user.company.name+"</b><br><i>"+user.company.catchPhrase+"</i><br>"+user.company.bs+"</span>");
 									return company;
 							},
 						},

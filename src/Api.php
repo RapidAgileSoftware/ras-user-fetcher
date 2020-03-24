@@ -25,82 +25,82 @@ class Api
     }
 
 
-    public function fetchUserRequest():string
+    public function fetchUserRequest()
     {
-        $handler = $this->getHandler();
-        $transient = $this->transientPrefix.'LIST';
-
-        // caching, do we already got this request in the transients?
-        var_dump($handler::test());
-        
-        //$users = $handler::getTransient($transient);
-        $user = get_transient('Rasta');
-        var_dump('pasta');
-        var_dump($users);
-        // no, we need to fetch it
-        if ($users === false) {
-            $users = $handler::fetch($this->fetchUrl);
-            // if we got them successful, write them to our cache
-            if ($users) {
-                // for now let's expire in one hour
-                $handler::setTransient($transient, $users, 3600);
-            }
-        }
+        $users = $this->getHandler()::fetch($this->fetchUrl);
 
         if (!$users) {
-            return self::errorResponse("Sorry, we couldn't connect to the user data server. Please scream in anger now.");
+            print self::errorResponse("Sorry, we couldn't connect to the users data server. Please scream in anger now.");
         }
         else {
-            return json_encode(['Result' => 'OK', 'Records' => $records]);
+            print self::okResponse($users);
         }
+        die();
     }
 
-    public function fetchUserDetails(int $id):string
+    public function fetchUserDetails()
     {
-        $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id);
+        $id = intval($_GET['id']);
+        if ($id > 0) {
+            $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id);
 
-        if (!$records) {
-            return self::errorResponse("Sorry, we couldn't fetch the Users details");
+            if ($records) {
+                print self::okResponse([$records]);
+                die();
+            }
         }
-        else {
-            return json_encode(['Result' => 'OK', 'Records' => [$records]]);
-        }
+        print self::errorResponse("Sorry, we couldn't fetch the Users details");
+        die();
     }
 
-    public function fetchUserPosts(int $id):string
+    public function fetchUserPosts()
     {
-        $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id . '/posts');
+        $id = intval($_GET['id']);
+        if ($id > 0) {
+            $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id . '/posts');
 
-        if (!$records) {
-            return self::errorResponse("Sorry, we couldn't fetch the Users posts");
+            if ($records) {
+                print self::okResponse($records);
+                die();
+            }
         }
-        else {
-            return json_encode(['Result' => 'OK', 'Records' => $records]);
-        }
+        print self::errorResponse("Sorry, we couldn't fetch the Users posts");
+        die();
     }
 
-    public function fetchUserAlbums(int $id):string
+    public function fetchUserAlbums()
     {
-        $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id . '/albums');
+        $id = intval($_GET['id']);
+        if ($id > 0) {
+            $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id . '/albums');
 
-        if (!$records) {
-            return self::errorResponse("Sorry, we couldn't fetch the Users albums");
+            if ($records) {
+                 print self::okResponse($records);
+                 die();
+            }
         }
-        else {
-            return json_encode(['Result' => 'OK', 'Records' => $records]);
-        }
+        print self::errorResponse("Sorry, we couldn't fetch the Users albums");
+        die();
     }
 
-    public function fetchUserTodos(int $id):string
+    public function fetchUserTodos()
     {
-        $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id . '/todos');
+        $id = intval($_GET['id']);
 
-        if (!$records) {
-            return self::errorResponse("Sorry, we couldn't fetch the Users ToDos");
+        if ($id > 0) {
+            $records = $this->getHandler()::fetch($this->fetchUrl . '/' . $id . '/todos');
+            if ($records) {
+                print self::okResponse($records);
+                die();
+            }
         }
-        else {
-            return json_encode(['Result' => 'OK', 'Records' => $records]);
-        }
+        print self::errorResponse("Sorry, we couldn't fetch the Users ToDos");
+        die();
+    }
+
+    public static function okResponse($data)
+    {
+        return json_encode(['Result' => 'OK', 'Records' => $data]);
     }
 
     public static function errorResponse(string $message):string
