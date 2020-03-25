@@ -22,19 +22,29 @@ if (! defined('WPINC')) {
 }
 require __DIR__ . '/vendor/autoload.php';
 
-define('RAS_USER_FETCHER_VERSION', '1.0.0');
+define('__version__', '1.0.0');
+
+// make the Pluging configurable via config.local.php
+require_once('config.php');
 
 
-$PluginActivator = new Rasta\UserFetcher\Activator();
+$PluginActivator = new Rasta\UserFetcher\Activator($config['Endpoint'], $config['Page Title']);
 
 register_activation_hook(__FILE__, [$PluginActivator, 'activate']);
 register_deactivation_hook(__FILE__, [$PluginActivator, 'deactivate']);
 add_action('wp_enqueue_scripts', [$PluginActivator, 'loadScripts']);
 
-$PluginApi = new Rasta\UserFetcher\Api();
+$PluginApi = new Rasta\UserFetcher\Api($config['Caching Time'], $config['Fetch Url']);
 //add_action('wp_ajax_nopriv_list-users', [$PluginApi, 'fetchUserRequest']);
 add_action('wp_ajax_list-users', [$PluginApi, 'fetchUserRequest']);
 add_action('wp_ajax_user-details', [$PluginApi, 'fetchUserDetails']);
 add_action('wp_ajax_user-posts', [$PluginApi, 'fetchUserPosts']);
 add_action('wp_ajax_user-todos', [$PluginApi, 'fetchUserTodos']);
 add_action('wp_ajax_user-albums', [$PluginApi, 'fetchUserAlbums']);
+
+// let's expose it to public users too
+add_action('wp_ajax_nopriv_list-users', [$PluginApi, 'fetchUserRequest']);
+add_action('wp_ajax_nopriv_user-details', [$PluginApi, 'fetchUserDetails']);
+add_action('wp_ajax_nopriv_user-posts', [$PluginApi, 'fetchUserPosts']);
+add_action('wp_ajax_nopriv_user-todos', [$PluginApi, 'fetchUserTodos']);
+add_action('wp_ajax_nopriv_user-albums', [$PluginApi, 'fetchUserAlbums']);

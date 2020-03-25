@@ -8,6 +8,7 @@ class ApiTest extends \Codeception\Test\Unit
     protected static $DefaultConfig = [
         'fetchUrl' => 'https://jsonplaceholder.typicode.com/users',
         'handler' => 'Rasta\UserFetcher\Handler',
+        'caching' => 3600
     ];
 
     /**
@@ -41,7 +42,9 @@ class ApiTest extends \Codeception\Test\Unit
     public function testDefaultConstruction()
     {
         // if we construct new Instance without params, the default config should be used
-        $this->assertEquals(self::$DefaultConfig['fetchUrl'], $this->instance->fetchUrl);
+        $this->assertEquals(self::$DefaultConfig['fetchUrl'], $this->instance->getFetchUrl());
+        $this->assertEquals(self::$DefaultConfig['caching'], $this->instance->getCacheTime());
+        $this->assertEquals(self::$DefaultConfig['handler'], $this->instance->getHandler());
     }
 
     public function testGetterAndSetterForHandler()
@@ -60,5 +63,13 @@ class ApiTest extends \Codeception\Test\Unit
         $expected = json_encode(['Result' => 'Error', 'Message' => $message]);
 
         $this->assertEquals($expected, \Rasta\UserFetcher\Api::errorResponse($message));
+    }
+
+    public function testokResponse()
+    {
+        $data = ['any' => []];
+        $expected = json_encode(['Result' => 'OK', 'Records' => $data]);
+
+        $this->assertEquals($expected, \Rasta\UserFetcher\Api::okResponse($data));
     }
 }

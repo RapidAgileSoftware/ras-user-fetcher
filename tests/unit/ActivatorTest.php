@@ -179,9 +179,9 @@ class ActivatorTest extends \Codeception\Test\Unit
     public function testGetJSDependencies()
     {
         $default = [
-            ['handle' => 'ras-user-fetcher-ui', 'src' => '../public/js/jquery-ui.min.js'],
-            ['handle' => 'ras-user-fetcher-jtable', 'src' => '../public/js/jquery.jtable.min.js'],
-            ['handle' => 'ras-user-fetcher-core', 'src' => '../public/js/ras-user-fetcher.js']
+            ['handle' => 'rasta-user-fetcher-ui', 'src' => '../public/js/jquery-ui.min.js'],
+            ['handle' => 'rasta-user-fetcher-jtable', 'src' => '../public/js/jquery.jtable.min.js'],
+            ['handle' => 'rasta-user-fetcher-core', 'src' => '../public/js/rasta-user-fetcher.min.js']
         ];
         // test for the default
         $this->assertEquals($default, $this->instance->getJSDependencies());

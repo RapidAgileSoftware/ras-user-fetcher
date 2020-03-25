@@ -95,13 +95,13 @@ class Handler
             $dep = ($jquery_dependend) ? ['jquery'] : [];
 
             foreach ($script_list as $script) {
-                wp_enqueue_script($script['handle'], plugins_url($script['src'], __FILE__), $dep, 'yyw');
+                wp_enqueue_script($script['handle'], plugins_url($script['src'], __FILE__), $dep);
             }
             //pass some data to js via l18n
             $js_data = [
                 'user_api' => admin_url('admin-ajax.php')
             ];
-            wp_localize_script('ras-user-fetcher-core', 'php_vars', $js_data);
+            wp_localize_script('rasta-user-fetcher-core', 'php_vars', $js_data);
 
             return true;
         }
