@@ -30,6 +30,9 @@ class Activator
             ->setHandler($handler);
     }
 
+    /**
+     * @return string
+     */
     public function getEndpoint():string
     {
         if (!isset($this->endpoint)) {

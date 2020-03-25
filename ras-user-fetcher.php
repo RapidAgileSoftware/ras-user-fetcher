@@ -20,7 +20,9 @@
 if (! defined('WPINC')) {
     die;
 }
-require __DIR__ . '/vendor/autoload.php';
+
+// make sure we dont include outoload twice (wp-config)
+require_once(__DIR__ . '/vendor/autoload.php');
 
 define('__version__', '1.0.0');
 
