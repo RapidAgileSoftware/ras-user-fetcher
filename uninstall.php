@@ -6,4 +6,5 @@ if (! defined('WP_UNINSTALL_PLUGIN')) {
 
 require __DIR__ . '/vendor/autoload.php';
 
-$PluginActivator = new Rasta\UserFetcher\Activator()->deactivate;
+$PluginActivator = new Rasta\UserFetcher\Activator();
+$PluginActivator->deactivate();
