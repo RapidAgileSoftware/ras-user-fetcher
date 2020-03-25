@@ -54,16 +54,16 @@ composer lint:fix
 *the config.local.php file is part of gitignore, so adding this file will not result in version control issues*
 
 ```php
-	$config = [
+$config = [
     	'Caching Time' => 3600,
     	'Endpoint' => 'ras-user-fetcher',
     	'Fetch Url' => 'https://jsonplaceholder.typicode.com/users',
     	'Page Title' => 'Users Table',
 	];
 
-	if (file_exists('config.local.php')) {
-    	include 'config.local.php';
-	}
+if (file_exists('config.local.php')) {
+    include 'config.local.php';
+}
 ```
 
 As seen in `config.php` are you able to configure the plugin by providing a `config.local.php` file.
