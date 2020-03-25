@@ -6,7 +6,7 @@
  * @package           Ras_User_Fetcher
  *
  * @wordpress-plugin
- * Plugin Name:       RasUserFetcher
+ * Plugin Name:       Rasta User Fetcher
  * Plugin URI:        rasta.online
  * Description:       this plugin creates a custom user fetcher endpoint to retrieve external user data
  * Version:           1.0.0
@@ -27,12 +27,23 @@ define('__version__', '1.0.0');
 // make the Pluging configurable via config.local.php
 require_once('config.php');
 
+/**
+ * Plugin Activator
+ * is responsible for getting the Plugin up and running
+ * or shutting it down in a clean way
+ **/
 
 $PluginActivator = new Rasta\UserFetcher\Activator($config['Endpoint'], $config['Page Title']);
 
 register_activation_hook(__FILE__, [$PluginActivator, 'activate']);
 register_deactivation_hook(__FILE__, [$PluginActivator, 'deactivate']);
 add_action('wp_enqueue_scripts', [$PluginActivator, 'loadScripts']);
+
+/**
+ * Plugin Api
+ * manages the Plugins needs while active
+ * contains all fetch data requests
+ **/
 
 $PluginApi = new Rasta\UserFetcher\Api($config['Caching Time'], $config['Fetch Url']);
 //add_action('wp_ajax_nopriv_list-users', [$PluginApi, 'fetchUserRequest']);
