@@ -3,8 +3,11 @@ namespace Rasta\UserFetcher;
 
 class Api
 {
+    // time to cache fetch results in seconds
     public $cacheTime;
+    // the uri we are getting data from
     public $fetchUrl;
+    // to avoids conflics with other plugings: prefix transients
     public $transientPrefix = 'RASTA_USER_';
     // Dependency Handler class
     protected $handler;
@@ -16,13 +19,22 @@ class Api
             ->setHandler($handler);
     }
 
-    public function setCacheTime($time)
+    /**
+     * @param ?int Time in seconds befor fetch cache expires
+     * [default] 3600 = 1h
+     * @return self
+     */
+    public function setCacheTime($time):self
     {
         $this->cacheTime = $time;
         
         return $this;
     }
 
+    /**
+     * validates if time is set and in the correct form
+     * @return int cache exiration time
+     */
     public function getCacheTime():int
     {
         if (!isset($this->cacheTime) || !is_int($this->cacheTime)) {
@@ -32,6 +44,9 @@ class Api
         return $this->cacheTime;
     }
 
+    /**
+     * @return string Url to fetch data
+     */
     public function getFetchUrl():string
     {
         if (!isset($this->fetchUrl)) {
@@ -41,13 +56,24 @@ class Api
         return $this->fetchUrl;
     }
 
+    /**
+     * @param string Url to fetch data
+     * @return self
+     */
     public function setFetchUrl(?string $fetchUrl):self
     {
         $this->fetchUrl = $fetchUrl;
 
         return $this;
     }
-
+    /**
+     * The Dependency Handler offers an abstraction level for
+     * direct interactions with the host system (wp) or other dependencies (curl)
+     * using this allows us two main benefits:
+     * - we just need to mock this static class for testing, the rest is supposed to be agnostic
+     * - we can replace even critical modules if the environment requires
+     * @return string Reference to static Dependency Handler
+     */
     public function getHandler():string
     {
         if (!isset($this->handler)) {
@@ -57,6 +83,10 @@ class Api
         return $this->handler;
     }
 
+    /**
+     * @param string Name of the static Handler class
+     * @return self
+     */
     public function setHandler(?string $handler):self
     {
         $this->handler = $handler;
@@ -64,7 +94,12 @@ class Api
         return $this;
     }
 
-
+    /**
+     * fetches all users from the given url
+     * hooked to admin_ajax
+     * renders the Api output expected by jTable
+     * @return void
+     */
     public function fetchUserRequest()
     {
         $users = $this->getHandler()::fetch($this->getFetchUrl(), $this->getCacheTime());
@@ -77,7 +112,12 @@ class Api
         }
         die();
     }
-
+    
+    /**
+     * fetches users details
+     * expects user id as GET parameter or renders error result
+     * @return void
+     */
     public function fetchUserDetails()
     {
         $id = intval($_GET['id']);
@@ -93,6 +133,11 @@ class Api
         die();
     }
 
+    /**
+     * fetches a users posts
+     * expects user id as GET parameter or renders error result
+     * @return void
+     */
     public function fetchUserPosts()
     {
         $id = intval($_GET['id']);
@@ -108,6 +153,11 @@ class Api
         die();
     }
 
+    /**
+     * fetches a users albums
+     * expects user id as GET parameter or renders error result
+     * @return void
+     */
     public function fetchUserAlbums()
     {
         $id = intval($_GET['id']);
@@ -123,6 +173,11 @@ class Api
         die();
     }
 
+    /**
+     * fetches a users todos
+     * expects user id as GET parameter or renders error result
+     * @return void
+     */
     public function fetchUserTodos()
     {
         $id = intval($_GET['id']);
@@ -138,11 +193,21 @@ class Api
         die();
     }
 
+    /**
+     * renders data into the exopected format
+     * @param  mixed $data
+     * @return string json encoded ok response
+     */
     public static function okResponse($data)
     {
         return json_encode(['Result' => 'OK', 'Records' => $data]);
     }
 
+    /**
+     * renders error message into the exopected format
+     * @param  string message
+     * @return string json encoded error response
+     */
     public static function errorResponse(string $message):string
     {
         return json_encode(['Result' => 'Error', 'Message' => $message]);
