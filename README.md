@@ -70,8 +70,8 @@ As seen in `config.php` are you able to configure the plugin by providing a `con
 To change the title of the page and lower the fetch cache to 1 minute, you could do
 
 ```php
-	$config['Page Title'] = 'My new shiny title';
-	$config['Caching Time'] = 60;
+$config['Page Title'] = 'My new shiny title';
+$config['Caching Time'] = 60;
 ``` 
 
 #### Configuring class Instances
@@ -79,15 +79,15 @@ To change the title of the page and lower the fetch cache to 1 minute, you could
 If you are working direct with the plugin classes, you can do any configuration freely with help of the according *setter methods*
 
 ```php
-	$Activator =  new new Rasta\UserFetcher\Activator();
-	$Activator->setEndpoint("new-end-point")->setPageTitle("New Page Title")->setSnippet("<div></div>")->setHandler("Rasta\UserFetcher");	
+$Activator =  new new Rasta\UserFetcher\Activator();
+$Activator->setEndpoint("new-end-point")->setPageTitle("New Page Title")->setSnippet("<div></div>")->setHandler("Rasta\UserFetcher");	
 
 ``` 
 
 or with a custom construction
 
 ```php
-	$Activator =  new Rasta\UserFetcher\Activator("new-end-point", "New Page Title", "<div></div>","Rasta\UserFetcher");
+$Activator =  new Rasta\UserFetcher\Activator("new-end-point", "New Page Title", "<div></div>","Rasta\UserFetcher");
 
 ``` 
 
