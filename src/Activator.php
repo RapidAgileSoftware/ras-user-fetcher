@@ -3,25 +3,55 @@ namespace Rasta\UserFetcher;
 
 class Activator
 {
-    // available url endpoint of fetch user page
+    /**
+     * available url endpoint of UserFetcher page
+     * @var string
+     */
     protected $endpoint;
-    // DependencyHandler class
+    /**
+     * Dependency Handler class name
+     * Dependency handlers offer an abstraction level for
+     * direct interactions with the host system (wp) or other dependencies (curl)
+     * using this approach allows us two main benefits:
+     * - we just need to mock this static class for testing, the rest is supposed to be system agnostic
+     * - we can replace even critical modules if the environment requires (no curl available)
+     * @var string
+     */
     protected $handler;
-    // holds a array of js files to load
+    /**
+     * list of needed js files
+     * @var array
+     */
     public $js_dependendies;
-    /***
+
+    /**
     * page can have 3 states:
     *   null : not fetched yet
     *   array: containing the page information
     *   false: tried to fetch witch current endpoint, but no result found
     * to cache bust use setEndpoint first
+    * @var array
     **/
     protected $page;
-    // page title of fetch user page
+    /**
+     * visible page title of UserFetcher page
+     * @var string
+     */
     protected $page_title;
-    // snippet to be included to start js functionalities
+    /**
+     * hrml snippet to start JavaScript app
+     * needs to deliver root point for jTable
+     * @var string
+     */
     protected $snippet;
 
+    /**
+     * constructor
+     * @param string $endpoint   uri of UserFetcher page
+     * @param string $page_title visible title of UserFetcher page
+     * @param string $snippet html snippet to be included to setup jTable app
+     * @param string $handler dependency abstration layer, name of static class
+     */
     public function __construct($endpoint = null, $page_title = null, $snippet = null, $handler = null)
     {
         $this->setEndpoint($endpoint)
@@ -31,7 +61,9 @@ class Activator
     }
 
     /**
-     * @return string
+     * getter for endpoint property
+     * @return string enpoint property
+     * default: ras-user-fetcher
      */
     public function getEndpoint():string
     {
@@ -42,6 +74,12 @@ class Activator
         return $this->endpoint;
     }
 
+    /**
+     * setter endpoint property
+     * @param ?string $endpoint_name
+     * can be null
+     * unsets cached page property
+     */
     public function setEndpoint(?string $endpoint_name):self
     {
         if ($this->endpoint !== $endpoint_name) {
@@ -53,6 +91,11 @@ class Activator
         return $this;
     }
 
+    /**
+     * getter handler property
+     * @return string name of dependency abstraction layer
+     * default: 'Rasta\UserFetcher\Handler'
+     */
     public function getHandler():string
     {
         if (!isset($this->handler)) {
@@ -62,6 +105,10 @@ class Activator
         return $this->handler;
     }
 
+    /**
+     * setter handler property
+     * @param string $handler name of dependency abstraction layer
+     */
     public function setHandler(?string $handler):self
     {
         $this->handler = $handler;
@@ -69,6 +116,11 @@ class Activator
         return $this;
     }
 
+    /**
+     * caches and fetches our UserFetcher page from wp
+     * contains all needed info to work with it
+     * @return array UserFetcher page
+     */
     public function getPage()
     {
         // check if we fetched the page already
@@ -80,6 +132,10 @@ class Activator
         return $this->page;
     }
 
+    /**
+     * setter page property
+     * @param array $page UserFetcher page
+     */
     public function setPage(?array $page):self
     {
         $this->page = $page;
@@ -87,6 +143,11 @@ class Activator
         return $this;
     }
 
+    /**
+     * getter page_title property
+     * @return string visible title of UserFetcher page
+     * default: Users Table
+     */
     public function getPageTitle():string
     {
         if (!isset($this->page_title)) {
@@ -96,6 +157,10 @@ class Activator
         return $this->page_title;
     }
 
+    /**
+     * setter page_title property
+     * @param string $page_title visible title of UserFetcher page
+     */
     public function setPageTitle(?string $page_title):self
     {
         $this->page_title = $page_title;
@@ -103,6 +168,11 @@ class Activator
         return $this;
     }
 
+    /**
+     * getter ssnippet property
+     * needs to contain #ras-user-fetcher and #ras-user-fetcher-details to work
+     * @return string html-snippet needed to start jTable extension
+     */
     public function getSnippet():string
     {
         if (!isset($this->snippet)) {
@@ -112,6 +182,10 @@ class Activator
         return $this->snippet;
     }
 
+    /**
+     * setter snippet property
+     * @param string $snippet html-snippet needed to start jTable extension
+     */
     public function setSnippet(?string $snippet):self
     {
         $this->snippet = $snippet;
@@ -120,14 +194,20 @@ class Activator
     }
 
     /**
-    * Exposed Activation step
-    *
-    **/
+     * Exposed Plugin Activation step
+     * triggers creation of UserFetcher page
+     * can be extended to contain more steps
+     * @return bool success status
+     */
     public function activate():bool
     {
         return $this->createPage();
     }
 
+    /**
+     * creates UserFetcher page according its configuration
+     * @return bool success status of creating the page
+     */
     protected function createPage():bool
     {
         if (!$this->pageExists()) {
@@ -151,15 +231,22 @@ class Activator
 
         return false;
     }
-    /**
-    * Exposed deactivation step
-    *
-    **/
+
+     /**
+     * Exposed Plugin Decctivation step
+     * triggers deletion of UserFetcher page
+     * can be extended to contain more steps
+     * @return bool success status
+     */
     public function deactivate():bool
     {
         return $this->deletePage();
     }
 
+    /**
+     * deletes UserFetcher page if found
+     *  @return bool success status]
+     */
     protected function deletePage():bool
     {
         $page = $this->getPage();
@@ -180,19 +267,31 @@ class Activator
         return false;
     }
 
+    /**
+     * do we find the UserFetcher page?
+     * @return bool success
+     */
     public function pageExists():bool
     {
         return ($this->getPage() === false) ? false : true;
     }
 
+    /**
+     * calls handler to enqueue scipts
+     * provide current endpoint and JS dependencies
+     * @return [type] [description]
+     * returns true if something was enqueued, false otherwise
+     */
     public function loadScripts():bool
     {
-        // call handler to enqueue scipts
-        // provide current endpoint and JS dependencies
-        // returns true if something was enqueued, false otherwise
+        
         return self::getHandler()::enqueueScripts($this->getEndpoint(), $this->getJSDependencies());
     }
 
+    /**
+     * getter js_dependency property
+     * @return array list of needed js files to be included
+     */
     public function getJSDependencies():array
     {
         if (!isset($this->js_dependendies)) {

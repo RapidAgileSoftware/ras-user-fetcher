@@ -57,7 +57,7 @@ composer lint:fix
 $config = [
     	'Caching Time' => 3600,
     	'Endpoint' => 'ras-user-fetcher',
-    	'Fetch Url' => 'https://jsonplaceholder.typicode.com/users',
+    	'Fetch Url' => 'https://xxx.yyy.zzz.com/users',
     	'Page Title' => 'Users Table',
 	];
 

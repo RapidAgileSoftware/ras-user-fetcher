@@ -66,13 +66,10 @@ class Api
 
         return $this;
     }
+
     /**
-     * The Dependency Handler offers an abstraction level for
-     * direct interactions with the host system (wp) or other dependencies (curl)
-     * using this allows us two main benefits:
-     * - we just need to mock this static class for testing, the rest is supposed to be agnostic
-     * - we can replace even critical modules if the environment requires
-     * @return string Reference to static Dependency Handler
+     * getter handler propert
+     * @return string name of dependency handler class
      */
     public function getHandler():string
     {
