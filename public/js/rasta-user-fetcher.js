@@ -184,8 +184,5 @@
 			});
 
 		$('#ras-user-fetcher').jtable('load');
-		
-       
-
     });
 })(jQuery);
