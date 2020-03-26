@@ -4,7 +4,7 @@ namespace Rasta\UserFetcher;
 /**
  * the Api class is responsible for all action while Plugin is active
  * mostly serves the ajax requests
- * formating the output in the expected way 
+ * formating the output in the expected way
  */
 class Api
 {
