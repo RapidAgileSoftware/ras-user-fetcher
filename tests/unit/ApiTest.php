@@ -36,7 +36,6 @@ class ApiTest extends \Codeception\Test\Unit
     }
     /**
      * reset $this->instance to default state before each test function
-     * @return [type] [description]
      */
     protected function _before()
     {

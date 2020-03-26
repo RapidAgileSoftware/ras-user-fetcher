@@ -4,7 +4,10 @@ namespace Rasta\UserFetcher\Tests\Unit;
 
 class ActivatorTest extends \Codeception\Test\Unit
 {
-
+    /**
+     * holds the current default configuration
+     * @var array
+     */
     protected static $DefaultConfig = [
         'endpoint' => 'ras-user-fetcher',
         'handler' => 'Rasta\UserFetcher\Handler',
@@ -13,34 +16,45 @@ class ActivatorTest extends \Codeception\Test\Unit
     ];
 
     /**
-     * @var \Rasta\UserFetcher\Activator
+     * eases access to tested class
+     * @var \Rasta\UserFetcher\Api
      */
     protected $instance;
 
     /**
-    * Reference to the mocked dependency handler
-    **/
+     * Reference to the mocked dependency handler
+     * @var string
+     */
     public $mockedHandler = 'Rasta\UserFetcher\Tests\Unit\MockHandler';
 
 
-
+    /**
+     * sets instance property to Activator class
+     */
     public function __construct()
     {
         parent::__construct();
         $this->instance = new \Rasta\UserFetcher\Activator();
     }
-
+    /**
+     * reset $this->instance to default state before each test function
+     */
     protected function _before()
     {
         // set fresh instance before each test
         $this->instance = new \Rasta\UserFetcher\Activator();
     }
-
+    /**
+     * shorthand to use mocked dependencies rather the standard
+     * @return [type] [description]
+     */
     protected function activateMock()
     {
         $this->instance->setHandler($this->mockedHandler);
     }
-
+    /**
+     * test the default construction
+     */
     public function testDefaultConstruction()
     {
         // retrieve the DefaultConfig
@@ -51,7 +65,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->assertEquals($DefaultConfig['page_title'], $this->instance->getPageTitle());
         $this->assertEquals($DefaultConfig['snippet'], $this->instance->getSnippet());
     }
-
+    /**
+     * tests the custom construction
+     */
     public function testCustomConstruction()
     {
         // define a custom config for Activator
@@ -74,7 +90,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->assertEquals($config['page_title'], $this->instance->getPageTitle());
         $this->assertEquals($config['snippet'], $this->instance->getSnippet());
     }
-
+    /**
+     * tests the getter and setter for endpoint property
+     */
     public function testGetterAndSetterForEndpoint()
     {
         // lets set and get a custom endpoint
@@ -84,7 +102,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $default = self::$DefaultConfig['endpoint'];
         $this->assertEquals($default, $this->instance->setEndpoint(null)->getEndpoint());
     }
-
+    /**
+     * tests the getter and setter for handler property
+     */
     public function testGetterAndSetterForHandler()
     {
         // lets set and get a custom endpoint
@@ -94,7 +114,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $default = self::$DefaultConfig['handler'];
         $this->assertEquals($default, $this->instance->setHandler(null)->getHandler());
     }
-
+    /**
+     * tests the getter and setter for page title property
+     */
     public function testGetterAndSetterForPageTitle()
     {
         // lets set and get a custom endpoint
@@ -104,7 +126,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $default = self::$DefaultConfig['page_title'];
         $this->assertEquals($default, $this->instance->setPageTitle(null)->getPageTitle());
     }
-
+    /**
+     * tests the getter and setter for snippet property
+     */
     public function testGetterAndSetterForSnippet()
     {
         // lets set and get a custom endpoint
@@ -114,7 +138,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $default = self::$DefaultConfig['snippet'];
         $this->assertEquals($default, $this->instance->setSnippet(null)->getSnippet());
     }
-
+    /**
+     * tests the getter and setter for page property
+     */
     public function testGetterAndSetterForPage()
     {
         $this->activateMock();
@@ -136,7 +162,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         // getPage should return false if the endpoint path is invalid
         $this->assertFalse($this->instance->setEndpoint('invalid-path')->getPage());
     }
-
+    /**
+     * test if double activation is prevented
+     */
     public function testDoubleActivation()
     {
         $this->activateMock();
@@ -148,6 +176,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         }
     }
 
+    /**
+     * try to acyivate a invalid endpoint rejected by wp
+     */
     public function testInvalidEndpointActivation()
     {
         // test when wp refuse to create new page,
@@ -156,6 +187,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->assertFalse($this->instance->setEndpoint('invalid-post-path')->activate());
     }
 
+    /**
+     * test if double deactivation is prevented
+     */
     public function testDoubleDeactivation()
     {
         $this->activateMock();
@@ -168,14 +202,19 @@ class ActivatorTest extends \Codeception\Test\Unit
             $this->assertFalse($this->instance->deactivate());
         }
     }
-
+    /**
+     * test deactivate without activation
+     */
     public function testInvalidDeactivation()
     {
         $this->activateMock();
         // deactivate without activate should be False
         $this->assertFalse($this->instance->deactivate());
     }
-
+    /**
+     * test getter and setter for property js_dependencies
+     * @return [type] [description]
+     */
     public function testGetJSDependencies()
     {
         $default = [
@@ -193,6 +232,9 @@ class ActivatorTest extends \Codeception\Test\Unit
         $this->assertEquals($custom, $this->instance->getJSDependencies());
     }
 
+    /**
+     * try to load scripts for valid/ invalid paths
+     */
     public function testLoadScripts()
     {
         $this->activateMock();
