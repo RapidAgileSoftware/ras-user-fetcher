@@ -3,15 +3,39 @@ namespace Rasta\UserFetcher;
 
 class Api
 {
-    // time to cache fetch results in seconds
+    /**
+     * time to cache fetched results in seconds
+     * @var int
+     */
     public $cacheTime;
-    // the uri we are getting data from
+    /**
+     * uri we are getting data from
+     * @var string
+     */
     public $fetchUrl;
-    // to avoids conflics with other plugings: prefix transients
-    public $transientPrefix = 'RASTA_USER_';
-    // Dependency Handler class
+    /**
+     * Dependency Handler class name
+     * Dependency handlers offer an abstraction level for
+     * direct interactions with the host system (wp) or other dependencies (curl)
+     * using this approach allows us two main benefits:
+     * - we just need to mock this static class for testing, the rest is supposed to be system agnostic
+     * - we can replace even critical modules if the environment requires (no curl available)
+     * @var string
+     */
     protected $handler;
+    /**
+     * to avoids conflics with other plugings: prefix transients names
+     * @var string
+     */
+    public $transientPrefix = 'RASTA_USER_';
 
+    /**
+     * constructor
+     * all parameters are optional
+     * @param int $caching   time to cache fetched results in seconds
+     * @param string $fetch_url uri we are getting data from
+     * @param string $handler  name of dependecy handler class
+     */
     public function __construct($caching = null, $fetch_url = null, $handler = null)
     {
         $this->setCacheTime($caching)
