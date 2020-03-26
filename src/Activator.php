@@ -1,6 +1,9 @@
 <?php
 namespace Rasta\UserFetcher;
-
+/**
+ * Activator class is responsible for all steps required to get the plugin upp and running
+ * and to clean up while deactivation
+ */
 class Activator
 {
     /**
