@@ -24,7 +24,7 @@
     "repositories": [
 		{
             "type": "vcs",
-            "url": "https://github.com/RapidAgileSoftware/ras-user-fetcher"
+            "url": "https://RapidAgileSoftware@bitbucket.org/RapidAgileSoftware/rasta-user-fetcher"
         }
 	],
     "license": "GPL",
@@ -36,7 +36,6 @@
     ],
     "scripts": {
         "test": "codecept run",
-        "test:coverage": "codecept run unit --coverage --coverage-xml --coverage-html",
         "lint": "phpcbf --standard=phpcs.xml",
         "lint:fix": "phpcbf --standard=phpcs.xml"
     }
