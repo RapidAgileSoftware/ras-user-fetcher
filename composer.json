@@ -19,12 +19,13 @@
         "codeception/codeception": "*",
         "rasta/sniffs": "1.*",
         "phpunit/phpunit": "*",
-        "codeception/module-asserts": "^1.1"
+        "codeception/module-asserts": "^1.1",
+        "symfony/http-foundation": "^4.4.7"
     },
     "repositories": [
 		{
             "type": "vcs",
-            "url": "https://RapidAgileSoftware@bitbucket.org/RapidAgileSoftware/rasta-user-fetcher"
+            "url": "https://github.com/RapidAgileSoftware/wp-demo-plugin"
         }
 	],
     "license": "GPL",

@@ -1,13 +1,13 @@
-# Wordpress User Fetcher Plugin  
+# Wordpress Demo Plugin
 
 *This project is a showcase product and may be used for eductional purpose.*
 
 ## What can it do?
 
-On activation this pluging will create a new Page in your current wordpress. This page has by default the name **Users Table** and will be available at  *yourdomain.com/ras-user-fetcher*. If you have the Permalink settings in "Plain" mode you will need to navigate to this page by your websites navigation or wordpress admin.
+On activation this plugin will create a new Page in your current wordpress. This page has by default the name **Users Table** and will be available at  *yourdomain.com/wp-demo-endpoint*. If you have the Permalink settings in "Plain" mode you will need to navigate to this page by your websites navigation or wordpress admin.
 
-When you open the page for the first time it will load a Users list via ajax and builds a table to display its information. You can click either on the user id, the name or the username and a new table will appear on top. In this table you get more detailed information as email, website, address and 3 buttons. The button will load this users albums, posts or todos and shows them in a new table rigth below. If there is an error in any of these steps a Error pop-up will show a according Error message.
-You may recognize that the first load of the page or a user details can take quite long, we'll have to wait for the external Api to reply here. Since the plugin implements caching are all following loads of the same data nearly instand ready.
+When you open the page for the first time it will load a Users list via ajax and builds a table to display its information. You can click either on the user id, the name or the username and a new table will appear on top. In this table you get more detailed information as email, website, address and 3 buttons. The button will load this users albums, posts or todos and shows them in a new table right below. If there is an error in any of these steps a Error pop-up will show a according Error message.
+You may recognize that the first load of the page or a user details can take quite long, we'll have to wait for the external Api to reply here. Since the plugin implements caching are all following loads of the same data nearly instant ready.
 
 
 On deactivation the plugin does the cleanup and deletes the previous created Users Table page.
@@ -23,7 +23,11 @@ On deactivation the plugin does the cleanup and deletes the previous created Use
 
 This plugin comes with batteries included:
 
-**Mandatory** install dependendies
+**Mandatory** update or install dependencies
+
+```bash
+composer update
+```
 
 ```bash
 composer install
@@ -57,7 +61,7 @@ composer lint:fix
 ```php
 $config = [
     	'Caching Time' => 3600,
-    	'Endpoint' => 'ras-user-fetcher',
+    	'Endpoint' => 'wp-demo-endpoint',
     	'Fetch Url' => 'https://xxx.yyy.zzz.com/users',
     	'Page Title' => 'Users Table',
 	];
@@ -73,7 +77,7 @@ To change the title of the page and lower the fetch cache to 1 minute, you could
 ```php
 $config['Page Title'] = 'My new shiny title';
 $config['Caching Time'] = 60;
-``` 
+```
 
 #### Configuring class Instances
 
@@ -81,22 +85,22 @@ If you are working direct with the plugin classes, you can do any configuration 
 
 ```php
 $Activator =  new new Rasta\UserFetcher\Activator();
-$Activator->setEndpoint("new-end-point")->setPageTitle("New Page Title")->setSnippet("<div></div>")->setHandler("Rasta\UserFetcher");	
+$Activator->setEndpoint("new-end-point")->setPageTitle("New Page Title")->setSnippet("<div></div>")->setHandler("Rasta\UserFetcher");
 
-``` 
+```
 
 or with a custom construction
 
 ```php
 $Activator =  new Rasta\UserFetcher\Activator("new-end-point", "New Page Title", "<div></div>","Rasta\UserFetcher");
 
-``` 
+```
 
 ### Styling
 
 *Does it look ugly?*
 
-This plugin does not provide any kind of styling or template manipulations. The underlaying idea is that the plugin can integrates into any existing theme without interfering with existing color schems, styles or customizations.  **Styles belong into a theme** 
+This plugin does not provide any kind of styling or template manipulations. The underlaying idea is that the plugin can integrates into any existing theme without interfering with existing color schems, styles or customizations.  **Styles belong into a theme**
 
 ### JavaScript
 
@@ -137,7 +141,7 @@ With over 10 years experience in TDD I figured the following as workable approac
 > codecept run
 Codeception PHP Testing Framework v4.1.3
 Powered by PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
-Running with seed: 
+Running with seed:
 
 
 Unit Tests (17) ----------------------------------------------------------------
@@ -164,24 +168,24 @@ Unit Tests (17) ----------------------------------------------------------------
 Time: 63 ms, Memory: 8.00MB
 
 OK (17 tests, 237 assertions)
-``` 
+```
 
 
-### `rasta-user-fetcher.php`
+### File `demo-plugin.php`
 
 Is the main entrypoint into the application. Here we define all our actions and hooks in an exposed way, so its offering and easy usability for any kind of developer. Actions can be deactivated by commenting them out or overridden.
 
-### `src/Activator.php` **class** *Rasta\UserFetcher\Activator*
+### File `src/Activator.php` **class** *Rasta\UserFetcher\Activator*
 
 The *Activator* class is responsible for all steps required to get the plugin up and running and to clean up on deactivation.
 
 It contains the logic for the Activation & Deactivation hook as well as including the required JavaScript files on our UserFetcher page.
 
-### `src/Api.php` **class** *Rasta\UserFetcher\Api*
+### File `src/Api.php` **class** *Rasta\UserFetcher\Api*
 
-The *Api* class is responsible for handling requests while the Plugin is active and at work. It fetches data and exposes it in the correct format for the *jTable* application. 
+The *Api* class is responsible for handling requests while the Plugin is active and at work. It fetches data and exposes it in the correct format for the *jTable* application.
 
-### `src/Handler.php` **class** *Rasta\UserFetcher\Handler*
+### File `src/Handler.php` **class** *Rasta\UserFetcher\Handler*
 
 This class is the *Dependency Handler* in our current project. It is a good software design pattern to *keep the code modular and agnostic* and reach a *high test-coverage*.
 
@@ -206,7 +210,7 @@ Let's have a look inside the `fetch` method
 ```php
 
 if ($result === false) {
-           
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -225,7 +229,7 @@ class MyHandler extends Handler
 	public static function fetch(string $fetch_url, $cache_time = 3600)
 	{
 		// we ignore caching in this example
-    	$result = file_get_contents($fetch_url); 
+    	$result = file_get_contents($fetch_url);
 		return ($result === false) ? false : json_decode($result);
 
 
@@ -240,7 +244,7 @@ All fetch requests run through the central *Handler* class, so all requests will
 To use **Dependency Injections** as our *Handler* class is a common solution in many programming languages and raises the *QoC* in automated code evaluations.
 
 
-### `public/js/rasta-user-fetcher.js`
+### File `public/js/demo.js`
 
 is the devopment version of the include `rasta-user-fetcher.min.js`.
 it shows the configuartion of the *jTable* jQuery extension to fit our requirements. The actual connection between php and Javascript is the hooking of the listAction endpoint:
@@ -259,27 +263,27 @@ add_action('wp_ajax_list-users', [$PluginApi, 'fetchUserRequest']);
 
 ```
 
-### `.editorconfig`
+### File `.editorconfig`
 
-EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. 
+EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs.
 
-### `.travis`
+### File `.travis`
 
 I like to connect TravisCI with my repos to automate workflows as much as possible. Even though it is not active in this private repo I may very well activate it at a later time for automated package releases.
 
-### `codeception.yml`
+### File `codeception.yml`
 
 configuration for *Codeception* based test
 
-### `composer.json`
+### File `composer.json`
 
 **composer** configuration file. Here we define dependencies, psr-4 namespaces, the handy scripts and basic package information
 
-### `config.php`
+### File `config.php`
 
 Defines value standards and offers the possibility of a `config.local.php` based overriding of those default values.
 
-### `phpcs.xml`
+### File `phpcs.xml`
 
 configuration file for code sniffer and automated code fixes available via `composer lint:fix`
 

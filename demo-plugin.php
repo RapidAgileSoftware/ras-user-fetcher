@@ -3,12 +3,12 @@
 /**
  * @link              rasta.online
  * @since             1.0.0
- * @package           Ras_User_Fetcher
+ * @package           WP Demo Plugin
  *
  * @wordpress-plugin
- * Plugin Name:       Rasta User Fetcher
- * Plugin URI:        rasta.online
- * Description:       this plugin creates a custom user fetcher endpoint to retrieve external user data
+ * Plugin Name:       Wordpress Demo Plugin
+ * Plugin URI:        https://github.com/RapidAgileSoftware/wp-demo-plugin
+ * Description:       This demo plugin uses a jTable extension to retrieve external user data
  * Version:           1.0.0
  * Author:            Jens Krause
  * Author URI:        rasta.online
