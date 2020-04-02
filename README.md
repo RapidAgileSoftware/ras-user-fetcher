@@ -1,4 +1,4 @@
-# Wordpress Demo Plugin
+# Wordpress Demo Plugin [![Build Status](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin.svg?branch=master)](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin)
 
 *This project is a showcase product and may be used for eductional purpose.*
 
@@ -13,8 +13,7 @@ You may recognize that the first load of the page or a user details can take qui
 On deactivation the plugin does the cleanup and deletes the previous created Users Table page.
 
 ## Requirements
-- php **target version** is **7.3**
-- this repo is also tested against *php 7.2* and *php 7.4* 
+- re **php 7.2**  - **php 7.2** [![Build Status](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin.svg?branch=master)](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin)
 - composer installed
 - curl extension
 - jQuery activated
@@ -24,29 +23,31 @@ On deactivation the plugin does the cleanup and deletes the previous created Use
 
 This plugin comes with batteries included:
 
-**Mandatory** update or install dependencies
+### Preparing the plugin
 
 ```bash
 composer update
 ```
 
+or 
+
 ```bash
 composer install
 ```
 
-Run Tests
+### Running Tests
 
 ```bash
 composer test
 ```
 
-Lint
+### Linting
 
 ```bash
 composer lint
 ```
 
-Run linting with auto-fix
+#### Run linting with auto-fix
 
 ```bash
 composer lint:fix
