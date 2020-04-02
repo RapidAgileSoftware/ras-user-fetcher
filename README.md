@@ -13,7 +13,8 @@ You may recognize that the first load of the page or a user details can take qui
 On deactivation the plugin does the cleanup and deletes the previous created Users Table page.
 
 ## Requirements
-- php:  *>7.2*
+- php **target version** is **7.3**
+- this repo is also tested against *php 7.2* and *php 7.4* 
 - composer installed
 - curl extension
 - jQuery activated
