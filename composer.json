@@ -1,6 +1,6 @@
 {
-    "name": "rasta/user-fetcher",
-    "description": "Fetches Users",
+    "name": "rasta/wp-demo-plugin",
+    "description": "This demo plugin fetches user data from an external API",
     "type": "library",
     "autoload": {
         "psr-4": {
@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "codeception/codeception": "*",
-        "rasta/sniffs": "1.*",
+        "rasta/sniffs": "^1.0",
         "phpunit/phpunit": "*",
         "codeception/module-asserts": "^1.1",
         "symfony/http-foundation": "^4.4.7"
