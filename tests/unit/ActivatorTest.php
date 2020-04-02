@@ -2,7 +2,6 @@
 
 namespace Rasta\UserFetcher\Tests;
 
-
 class ActivatorTest extends \Codeception\Test\Unit
 {
     /**
