@@ -9,7 +9,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Rasta\\UserFetcher\\Tests\\": "tests/"
+            "Rasta\\UserFetcher\\Tests\\": "tests/unit"
         }
     },
     "require": {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rasta\UserFetcher\Tests\Unit;
+namespace Rasta\UserFetcher\Tests;
 
 use Rasta\UserFetcher\Handler as Handler;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rasta\UserFetcher\Tests\Unit;
+namespace Rasta\UserFetcher\Tests;
 
 class ApiTest extends \Codeception\Test\Unit
 {
@@ -24,7 +24,7 @@ class ApiTest extends \Codeception\Test\Unit
      * Reference to the mocked dependency handler
      * @var string
      */
-    public $mockedHandler = 'Rasta\UserFetcher\Tests\Unit\MockHandler';
+    public $mockedHandler = 'Rasta\UserFetcher\Tests\MockHandler';
 
     /**
      * sets instance property to Api class

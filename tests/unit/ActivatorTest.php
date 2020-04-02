@@ -1,6 +1,7 @@
 <?php
 
-namespace Rasta\UserFetcher\Tests\Unit;
+namespace Rasta\UserFetcher\Tests;
+
 
 class ActivatorTest extends \Codeception\Test\Unit
 {
@@ -25,7 +26,7 @@ class ActivatorTest extends \Codeception\Test\Unit
      * Reference to the mocked dependency handler
      * @var string
      */
-    public $mockedHandler = '\\Rasta\\UserFetcher\\Tests\\Unit\\MockHandler';
+    public $mockedHandler = 'Rasta\UserFetcher\Tests\MockHandler';
 
 
     /**
