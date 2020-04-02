@@ -13,7 +13,8 @@ You may recognize that the first load of the page or a user details can take qui
 On deactivation the plugin does the cleanup and deletes the previous created Users Table page.
 
 ## Requirements
-- requires  **php** 7.2*  - **php** **7.4** [![Build Status](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin.svg?branch=master)](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin)
+- requires  **php** *7.2*  - **php** *7.4* 
+- [![Build Status](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin.svg?branch=master)](https://travis-ci.com/RapidAgileSoftware/wp-demo-plugin)
 - composer 
 - php *curl extension* enabled
 - wordpress *jQuery* activated
